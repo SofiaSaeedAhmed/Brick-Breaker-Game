@@ -29,7 +29,7 @@ necessary.
 
 **1- Lambda expressions Added**    
 
-In `GameEngine.java`, for all the Threads, I changed `Runnable()` to lambda expressions. I also removed `@Override` in the classes which had that with `Runnable` to simplify the syntax.
+In `GameEngine.java`, for all the Threads, I changed `Runnable()` to lambda expressions. I also removed `@Override` in the classes to simplify the syntax.
 
 
 # Unexpected Problems: 
