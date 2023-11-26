@@ -27,7 +27,7 @@ List the Java classes you modified from the provided code
 base. Describe the changes you made and explain why these modifications were
 necessary.
 
-## 1- Lambda expressions Added
+** 1- Lambda expressions Added **
 In GameEngine.java, for all the Threads, I changed Runnable() to lambda expressions. I also removed @override in the classes which had that with runnable to simplfy the syntax. 
 
 # Unexpected Problems: 
