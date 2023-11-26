@@ -29,9 +29,7 @@ necessary.
 
 **1- Lambda expressions Added**    
 
-In `<span style="color:blue;">GameEngine.java</span>`, for all the Threads, I changed `Runnable()` to lambda expressions. I also removed `@Override` in the classes which had that with `Runnable` to simplify the syntax.
-
-The background color is `#ffffff` for light mode and `#000000` for dark mode.
+In `GameEngine.java`, for all the Threads, I changed `Runnable()` to lambda expressions. I also removed `@Override` in the classes which had that with `Runnable` to simplify the syntax.
 
 
 # Unexpected Problems: 
