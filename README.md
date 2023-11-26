@@ -27,11 +27,12 @@ List the Java classes you modified from the provided code
 base. Describe the changes you made and explain why these modifications were
 necessary.
 
-**1- Lambda expressions Added**   
-
-In GameEngine.java, for all the Threads, I changed Runnable() to lambda expressions. I also removed @override in the classes which had that with runnable to simplfy the syntax. 
+**1- Lambda expressions Added**    
 
 In `<span style="color:blue;">GameEngine.java</span>`, for all the Threads, I changed `Runnable()` to lambda expressions. I also removed `@Override` in the classes which had that with `Runnable` to simplify the syntax.
+
+The background color is `#ffffff` for light mode and `#000000` for dark mode.
+
 
 # Unexpected Problems: 
 Communicate any unexpected challenges or issues you
