@@ -31,6 +31,8 @@ necessary.
 
 In GameEngine.java, for all the Threads, I changed Runnable() to lambda expressions. I also removed @override in the classes which had that with runnable to simplfy the syntax. 
 
+In `<span style="color:blue;">GameEngine.java</span>`, for all the Threads, I changed `Runnable()` to lambda expressions. I also removed `@Override` in the classes which had that with `Runnable` to simplify the syntax.
+
 # Unexpected Problems: 
 Communicate any unexpected challenges or issues you
 encountered during the assignment. Describe how you addressed or attempted to
