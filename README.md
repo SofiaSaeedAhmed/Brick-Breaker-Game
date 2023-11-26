@@ -22,10 +22,13 @@ Enumerate any new Java classes that you introduced for the
 assignment. Include a brief description of each class's purpose and its location in the
 code.
 
-# Modified Java Classes
+# Modified Java Classes:
 List the Java classes you modified from the provided code
 base. Describe the changes you made and explain why these modifications were
 necessary.
+
+# 1- Lambda expressions Added
+In GameEngine.java, for all the Threads, I changed Runnable() to lambda expressions. I also removed @override in the classes which had that with runnable to simplfy the syntax. 
 
 # Unexpected Problems: 
 Communicate any unexpected challenges or issues you
