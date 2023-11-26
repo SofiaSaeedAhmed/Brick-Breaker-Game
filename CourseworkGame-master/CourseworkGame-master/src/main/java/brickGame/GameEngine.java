@@ -21,6 +21,7 @@ public class GameEngine {
     public void setFps(int fps) {
         this.fps = 1000 / fps;
     }
+    
 
     // a new thread for updating the game method
         // method runs in a loop, calls onAction.update() and then sleeps for the specified duration (fps)
