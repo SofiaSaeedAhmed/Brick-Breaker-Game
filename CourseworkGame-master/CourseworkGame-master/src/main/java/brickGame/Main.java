@@ -17,6 +17,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+
 // imports for other functionality
 import java.io.*;
 import java.util.ArrayList;
@@ -122,8 +123,15 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             }
 
             // calls methods to initialize components of the game
-            initBall();
-            initBreak();
+            Random random = new Random();
+            xBall = random.nextInt(sceneWidth) + 1;
+            yBall = random.nextInt(sceneHeight - 200) + ((level + 1) * Block.getHeight()) + 15;
+
+            // calls ball initializer
+            ball =  BallInitializer.initBall(ballRadius);
+
+            // calls paddle initializer
+            rect = PaddleInitializer.initPaddle(xBreak, yBreak, breakWidth, breakHeight);
 
             // Initialize the Board
             Board board = new Board(level);
@@ -227,10 +235,12 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
 
+    // Entry point of JavaFX application
     public static void main(String[] args) {
         launch(args);
     }
 
+    // event handling
     @Override
     public void handle(KeyEvent event) {
         switch (event.getCode()) {
@@ -238,7 +248,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 move(LEFT);
                 break;
             case RIGHT:
-
                 move(RIGHT);
                 break;
             case DOWN:
@@ -250,63 +259,37 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         }
     }
 
-    float oldXBreak;
+    // float oldXBreak;
 
-    private void move(final int direction) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int sleepTime = 4;
-                for (int i = 0; i < 30; i++) {
-                    if (xBreak == (sceneWidth - breakWidth) && direction == RIGHT) {
-                        return;
-                    }
-                    if (xBreak == 0 && direction == LEFT) {
-                        return;
-                    }
-                    if (direction == RIGHT) {
-                        xBreak++;
-                    } else {
-                        xBreak--;
-                    }
-                    centerBreakX = xBreak + halfBreakWidth;
-                    try {
-                        Thread.sleep(sleepTime);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    if (i >= 20) {
-                        sleepTime = i;
-                    }
+    //  responsible for handling the paddle's movement
+
+    private void move(final int direction) {        // direction tells whether to move left or right
+        new Thread(() -> {
+            int sleepTime = 4;
+            for (int i = 0; i < 30; i++) {
+                if (xBreak == (sceneWidth - breakWidth) && direction == RIGHT) {
+                    return;
+                }
+                if (xBreak == 0 && direction == LEFT) {
+                    return;
+                }
+                if (direction == RIGHT) {
+                    xBreak++;
+                } else {
+                    xBreak--;
+                }
+                centerBreakX = xBreak + halfBreakWidth;
+                try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (i >= 20) {
+                    sleepTime = i;
                 }
             }
         }).start();
-
-
     }
-
-
-    private void initBall() {
-        Random random = new Random();
-        xBall = random.nextInt(sceneWidth) + 1;
-        yBall = random.nextInt(sceneHeight - 200) + ((level + 1) * Block.getHeight()) + 15;
-        ball = new Circle();
-        ball.setRadius(ballRadius);
-        ball.setFill(new ImagePattern(new Image("ball.png")));
-    }
-
-    private void initBreak() {
-        rect = new Rectangle();
-        rect.setWidth(breakWidth);
-        rect.setHeight(breakHeight);
-        rect.setX(xBreak);
-        rect.setY(yBreak);
-
-        ImagePattern pattern = new ImagePattern(new Image("block.jpg"));
-
-        rect.setFill(pattern);
-    }
-
 
     private boolean goDownBall                  = true;
     private boolean goRightBall                 = true;
