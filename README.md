@@ -26,7 +26,7 @@ code.
 
 `Main.java` had a `initBoard()` method which I separated into a different file called `Board.java`.  
 
-This refactoring creates a Board class responsible for initializing and managing the game board. The Main class now creates an instance of Board and adds its blocks to the root of the scene. This separation enhances code organization and maintainability.  
+**Purpose:** This refactoring creates a Board class responsible for initializing and managing the game board. The Main class now creates an instance of Board and adds its blocks to the root of the scene. This separation enhances code organization and maintainability.  
 
   
 **Location:** This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.
