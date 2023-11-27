@@ -50,15 +50,16 @@ _**Update to PhysicsCalculation() method:**_
 I replaced the manual loop in the  `PhysicsCalculation()` method with a scheduled task using `scheduler.scheduleAtFixedRate()`.
 The `onAction.onPhysicsUpdate()` method is scheduled to run at a fixed rate of fps milliseconds.
 
-_**Update to TimeStart() method:**_
+_**Update to TimeStart() method:**_  
+
 In the original code, the `TimeStart()` method had a manual loop with `Thread.sleep(1)` to increment the time variable at a fine-grained rate. I replaced this manual loop with a scheduled task using `scheduler.scheduleAtFixedRate()`.  
 The `onAction.onTime(time)` method is scheduled to run at a fixed rate of 1 millisecond.
 
-_**Removal of timeThread:**_
+_**Removal of timeThread:**_  
 
 The `timeThread` field is no longer necessary as the time-related tasks are now scheduled using the `ScheduledExecutorService`.
 
-_**Changes to stop() method:**_
+_**Changes to stop() method:**_  
 
 The `stop()` method was updated to shut down the `ScheduledExecutorService(scheduler)` using `scheduler.shutdownNow()` when the game engine is stopped. This ensures that the scheduled tasks are stopped gracefully.
 
