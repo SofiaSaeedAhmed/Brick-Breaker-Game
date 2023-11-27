@@ -37,31 +37,31 @@ In `GameEngine.java`, IntelliJ was giving an error indicating that `Thread.sleep
 
 * _**Initialization of ScheduledExecutorService:**_  
 
-I added a `ScheduledExecutorService` named scheduler as a class field.
-This executor service is initialized using `Executors.newScheduledThreadPool(2)`, creating a pool of two threads for scheduling tasks.  
+    I added a `ScheduledExecutorService` named scheduler as a class field.
+    This executor service is initialized using `Executors.newScheduledThreadPool(2)`, creating a pool of two threads for scheduling tasks.  
 
   
 * _**Update to Update() method:**_  
 
-I replaced the manual loop with `Thread.sleep()` in the `Update()` method with a scheduled task using `scheduler.scheduleAtFixedRate()`.
-The `onAction.onUpdate()` method is scheduled to run at a fixed rate of fps milliseconds.   
+    I replaced the manual loop with `Thread.sleep()` in the `Update()` method with a scheduled task using `scheduler.scheduleAtFixedRate()`.
+    The `onAction.onUpdate()` method is scheduled to run at a fixed rate of fps milliseconds.   
 
 
 * _**Update to PhysicsCalculation() method:**_
 
-I replaced the manual loop in the  `PhysicsCalculation()` method with a scheduled task using `scheduler.scheduleAtFixedRate()`.
-The `onAction.onPhysicsUpdate()` method is scheduled to run at a fixed rate of fps milliseconds.  
+    I replaced the manual loop in the  `PhysicsCalculation()` method with a scheduled task using `scheduler.scheduleAtFixedRate()`.
+    The `onAction.onPhysicsUpdate()` method is scheduled to run at a fixed rate of fps milliseconds.  
 
 
 * _**Update to TimeStart() method:**_  
 
-In the original code, the `TimeStart()` method had a manual loop with `Thread.sleep(1)` to increment the time variable at a fine-grained rate. I replaced this manual loop with a scheduled task using `scheduler.scheduleAtFixedRate()`.  
-The `onAction.onTime(time)` method is scheduled to run at a fixed rate of 1 millisecond.  
+    In the original code, the `TimeStart()` method had a manual loop with `Thread.sleep(1)` to increment the time variable at a fine-grained rate. I replaced this manual loop with a scheduled task using `scheduler.scheduleAtFixedRate()`.  
+    The `onAction.onTime(time)` method is scheduled to run at a fixed rate of 1 millisecond.  
 
 
 * _**Removal of timeThread:**_  
 
-The `timeThread` field is no longer necessary as the time-related tasks are now scheduled using the `ScheduledExecutorService`.  
+    The `timeThread` field is no longer necessary as the time-related tasks are now scheduled using the `ScheduledExecutorService`.  
 
 
 * _**Changes to stop() method:**_  
