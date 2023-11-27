@@ -24,14 +24,21 @@ code.
 
 **1- New Board.java file made**
 
-`Main.java` had a `initBoard()` method which I separated into a different file called `Board.java`.  
+`Main.java` had a `initBoard()` method which I separated into a different class file called `Board.java`.  
 
 **Purpose:** This refactoring creates a Board class responsible for initializing and managing the game board. The Main class now creates an instance of Board and adds its blocks to the root of the scene. This separation enhances code organization and maintainability.  
 
   
-**Location:** This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.
+**Location:** This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.  
+
 
 **2- New BallInitializer.java file made**  
+
+`Main.java` had a `initBall()` method called in `public void start(Stage primaryStage) throws Exception` section and initialized further in the code. I separated this into a different file called `BallInitializer(),java`.  
+
+**Purpose:** Refactoring the `initBall()` method into a different class can offer several advantages in terms of code organization, readability, and maintainability.    
+
+**Location:** This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.
 
 
 # Modified Java Classes:
