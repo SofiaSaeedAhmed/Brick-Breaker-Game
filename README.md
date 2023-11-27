@@ -35,7 +35,7 @@ In `GameEngine.java`, for all the Threads, I changed `Runnable()` to lambda expr
 
 In `GameEngine.java`, IntelliJ was giving an error indicating that `Thread.sleep()` in a loop like this may lead to inefficient CPU usage, also known as busy-waiting. This was causing glitches in the game and was also potentially wasting CPU resources. Busy-waiting is generally discouraged because it can lead to high CPU usage and inefficient resource utilization. Hence, I introduced the `ScheduledExecutorService` to schedule periodic tasks at a fixed rate, eliminating the need for manual sleep in a loop.
 
-_**Initialization of ScheduledExecutorService:**_  
+*_**Initialization of ScheduledExecutorService:**_  
 
 I added a `ScheduledExecutorService` named scheduler as a class field.
 This executor service is initialized using `Executors.newScheduledThreadPool(2)`, creating a pool of two threads for scheduling tasks.
