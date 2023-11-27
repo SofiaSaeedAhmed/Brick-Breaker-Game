@@ -22,6 +22,10 @@ Enumerate any new Java classes that you introduced for the
 assignment. Include a brief description of each class's purpose and its location in the
 code.
 
+**1- New Board.java file made**
+
+`Main.java` had a `initBoard()` method which I separated into a different file called `Board.java`. This refactoring creates a Board class responsible for initializing and managing the game board. The Main class now creates an instance of Board and adds its blocks to the root of the scene. This separation enhances code organization and maintainability.
+
 # Modified Java Classes:
 List the Java classes you modified from the provided code
 base. Describe the changes you made and explain why these modifications were
