@@ -24,7 +24,8 @@ code.
 
 **1- New Board.java file made**
 
-`Main.java` had a `initBoard()` method which I separated into a different file called `Board.java`. The purpose of this file is to initialize the board and display the bricks randomly on the screen.  
+`Main.java` had a `initBoard()` method which I separated into a different file called `Board.java`. The purpose of this file is to initialize the board and display the bricks randomly on the screen.    
+
   
 This refactoring creates a Board class responsible for initializing and managing the game board. The Main class now creates an instance of Board and adds its blocks to the root of the scene. This separation enhances code organization and maintainability.  
 
