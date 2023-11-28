@@ -108,6 +108,8 @@ These modifications improve the efficiency of the code by using a modern concurr
 
 I separated `setPhysicsToBall()` method into 4 different methods - `moveBall()` , `checkCollisionWithWalls()`, `checkCollisionWithPaddle()` and `checkCollisionWithBlocks()`
 
+I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.
+
 # Unexpected Problems: 
 Communicate any unexpected challenges or issues you
 encountered during the assignment. Describe how you addressed or attempted to
