@@ -3,7 +3,6 @@ package brickGame;
 // imports for javaFx
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -54,14 +53,12 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     private int destroyedBlockCount = 0;        // counts the number of blocks destroyed
 
-    private final double v = 1.000;
-
     private int  heart    = 3;      // intial number of lives
     private int  score    = 0;
 
     // time related variables
     private long time     = 0;
-    private long hitTime  = 0;
+    public long hitTime  = 0;
     private long goldTime = 0;
 
     private GameEngine engine;      // instance of the engine path
@@ -105,7 +102,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     @Override
     // takes primary stage as parameter for javafx
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
 
@@ -201,28 +198,22 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 engine.start();
             }
 
-            load.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    // calls load game method
-                    loadGame();
-                    // hide buttons
-                    load.setVisible(false);
-                    newGame.setVisible(false);
-                }
+            load.setOnAction(Event -> {
+                // calls load game method
+                loadGame();
+                // hide buttons
+                load.setVisible(false);
+                newGame.setVisible(false);
             });
 
-            newGame.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    engine = new GameEngine();
-                    engine.setOnAction(Main.this);
-                    engine.setFps(120);
-                    engine.start();
+            newGame.setOnAction(Event -> {
+                engine = new GameEngine();
+                engine.setOnAction(Main.this);
+                engine.setFps(120);
+                engine.start();
 
-                    load.setVisible(false);
-                    newGame.setVisible(false);
-                }
+                load.setVisible(false);
+                newGame.setVisible(false);
             });
         } else // if new game is loaded from save, creates a new instance of game engine
         {
@@ -291,37 +282,45 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         }).start();
     }
 
-    private boolean goDownBall                  = true;
-    private boolean goRightBall                 = true;
-    private boolean colideToBreak               = false;
-    private boolean colideToBreakAndMoveToRight = true;
-    private boolean colideToRightWall           = false;
-    private boolean colideToLeftWall            = false;
-    private boolean colideToRightBlock          = false;
-    private boolean colideToBottomBlock         = false;
-    private boolean colideToLeftBlock           = false;
-    private boolean colideToTopBlock            = false;
+    private boolean goDownBall                  = true;     // ball moves down
+    private boolean goRightBall                 = true;     // ball moves right
+    private boolean collideToBreak               = false;   // whether ball has collided with the paddle
+    private boolean collideToBreakAndMoveToRight = true;
+    private boolean collideToRightWall           = false;
+    private boolean collideToLeftWall            = false;
+    private boolean collideToRightBlock          = false;
+    private boolean collideToBottomBlock         = false;
+    private boolean collideToLeftBlock           = false;
+    private boolean collideToTopBlock            = false;
 
+
+    // velocity of the ball in X and Y direction
     private double vX = 1.000;
-    private double vY = 1.000;
 
+    // A method that resets all the collision flags to their initial state. It's used to clear the collision flags at the beginning of each frame or when needed.
+    private void resetCollideFlags() {
 
-    private void resetColideFlags() {
+        collideToBreak = false;
+        collideToBreakAndMoveToRight = false;
+        collideToRightWall = false;
+        collideToLeftWall = false;
 
-        colideToBreak = false;
-        colideToBreakAndMoveToRight = false;
-        colideToRightWall = false;
-        colideToLeftWall = false;
-
-        colideToRightBlock = false;
-        colideToBottomBlock = false;
-        colideToLeftBlock = false;
-        colideToTopBlock = false;
+        collideToRightBlock = false;
+        collideToBottomBlock = false;
+        collideToLeftBlock = false;
+        collideToTopBlock = false;
     }
+    
 
     private void setPhysicsToBall() {
-        //v = ((time - hitTime) / 1000.000) + 1.000;
+        moveBall();
+        checkCollisionWithWalls();
+        checkCollisionWithPaddle();
+        checkCollisionWithBlocks();
+    }
 
+    private void moveBall() {
+        double vY = 1.000;
         if (goDownBall) {
             yBall += vY;
         } else {
@@ -333,109 +332,92 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         } else {
             xBall -= vX;
         }
+    }
 
+    private void checkCollisionWithWalls() {
         if (yBall <= 0) {
-            //vX = 1.000;
-            resetColideFlags();
+            resetCollideFlags();
             goDownBall = true;
             return;
         }
+
         if (yBall >= sceneHeight) {
             goDownBall = false;
             if (!isGoldStatus) {
-                //TODO gameover
                 heart--;
-                new Score().show(sceneWidth / 2, sceneHeight / 2, -1, this);
+                new Score().show((double) sceneWidth / 2, (double) sceneHeight / 2, -1, this);
 
                 if (heart == 0) {
                     new Score().showGameOver(this);
                     engine.stop();
                 }
-
-            }
-            //return;
-        }
-
-        if (yBall >= yBreak - ballRadius) {
-            //System.out.println("Colide1");
-            if (xBall >= xBreak && xBall <= xBreak + breakWidth) {
-                hitTime = time;
-                resetColideFlags();
-                colideToBreak = true;
-                goDownBall = false;
-
-                double relation = (xBall - centerBreakX) / (breakWidth / 2);
-
-                if (Math.abs(relation) <= 0.3) {
-                    //vX = 0;
-                    vX = Math.abs(relation);
-                } else if (Math.abs(relation) > 0.3 && Math.abs(relation) <= 0.7) {
-                    vX = (Math.abs(relation) * 1.5) + (level / 3.500);
-                    //System.out.println("vX " + vX);
-                } else {
-                    vX = (Math.abs(relation) * 2) + (level / 3.500);
-                    //System.out.println("vX " + vX);
-                }
-
-                if (xBall - centerBreakX > 0) {
-                    colideToBreakAndMoveToRight = true;
-                } else {
-                    colideToBreakAndMoveToRight = false;
-                }
-                //System.out.println("Colide2");
             }
         }
 
         if (xBall >= sceneWidth) {
-            resetColideFlags();
-            //vX = 1.000;
-            colideToRightWall = true;
+            resetCollideFlags();
+            collideToRightWall = true;
         }
 
         if (xBall <= 0) {
-            resetColideFlags();
-            //vX = 1.000;
-            colideToLeftWall = true;
+            resetCollideFlags();
+            collideToLeftWall = true;
         }
+    }
 
-        if (colideToBreak) {
-            if (colideToBreakAndMoveToRight) {
-                goRightBall = true;
-            } else {
-                goRightBall = false;
+    private void checkCollisionWithPaddle() {
+        if (yBall >= yBreak - ballRadius) {
+            if (xBall >= xBreak && xBall <= xBreak + breakWidth) {
+                hitTime = time;
+                resetCollideFlags();
+                collideToBreak = true;
+                goDownBall = false;
+
+                double relation = (xBall - centerBreakX) / ((double) breakWidth / 2);
+
+                if (Math.abs(relation) <= 0.3) {
+                    vX = Math.abs(relation);
+                } else if (Math.abs(relation) > 0.3 && Math.abs(relation) <= 0.7) {
+                    vX = (Math.abs(relation) * 1.5) + (level / 3.500);
+                } else {
+                    vX = (Math.abs(relation) * 2) + (level / 3.500);
+                }
+
+                collideToBreakAndMoveToRight = xBall - centerBreakX > 0;
             }
         }
+    }
 
-        //Wall Collide
+    private void checkCollisionWithBlocks() {
+        if (collideToBreak) {
+            goRightBall = collideToBreakAndMoveToRight;
+        }
 
-        if (colideToRightWall) {
+        if (collideToRightWall) {
             goRightBall = false;
         }
 
-        if (colideToLeftWall) {
+        if (collideToLeftWall) {
             goRightBall = true;
         }
 
-        //Block Colide
-
-        if (colideToRightBlock) {
+        if (collideToRightBlock) {
             goRightBall = true;
         }
 
-        if (colideToLeftBlock) {
+        if (collideToLeftBlock) {
             goRightBall = true;
         }
 
-        if (colideToTopBlock) {
+        if (collideToTopBlock) {
             goDownBall = false;
         }
 
-        if (colideToBottomBlock) {
+        if (collideToBottomBlock) {
             goDownBall = true;
         }
-
-
     }
+
 
 
     private void checkDestroyedCount() {
@@ -448,73 +430,71 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
     private void saveGame() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new File(savePathDir).mkdirs();
-                File file = new File(savePath);
-                ObjectOutputStream outputStream = null;
-                try {
-                    outputStream = new ObjectOutputStream(new FileOutputStream(file));
+        new Thread(() -> {
+            new File(savePathDir).mkdirs();
+            File file = new File(savePath);
+            ObjectOutputStream outputStream = null;
+            try {
+                outputStream = new ObjectOutputStream(new FileOutputStream(file));
 
-                    outputStream.writeInt(level);
-                    outputStream.writeInt(score);
-                    outputStream.writeInt(heart);
-                    outputStream.writeInt(destroyedBlockCount);
+                outputStream.writeInt(level);
+                outputStream.writeInt(score);
+                outputStream.writeInt(heart);
+                outputStream.writeInt(destroyedBlockCount);
 
+                outputStream.writeDouble(xBall);
+                outputStream.writeDouble(yBall);
+                outputStream.writeDouble(xBreak);
+                outputStream.writeDouble(yBreak);
+                outputStream.writeDouble(centerBreakX);
+                outputStream.writeLong(time);
+                outputStream.writeLong(goldTime);
+                outputStream.writeDouble(vX);
 
-                    outputStream.writeDouble(xBall);
-                    outputStream.writeDouble(yBall);
-                    outputStream.writeDouble(xBreak);
-                    outputStream.writeDouble(yBreak);
-                    outputStream.writeDouble(centerBreakX);
-                    outputStream.writeLong(time);
-                    outputStream.writeLong(goldTime);
-                    outputStream.writeDouble(vX);
+                outputStream.writeBoolean(isExistHeartBlock);
+                outputStream.writeBoolean(isGoldStatus);
+                outputStream.writeBoolean(goDownBall);
+                outputStream.writeBoolean(goRightBall);
+                outputStream.writeBoolean(collideToBreak);
+                outputStream.writeBoolean(collideToBreakAndMoveToRight);
+                outputStream.writeBoolean(collideToRightWall);
+                outputStream.writeBoolean(collideToLeftWall);
+                outputStream.writeBoolean(collideToRightBlock);
+                outputStream.writeBoolean(collideToBottomBlock);
+                outputStream.writeBoolean(collideToLeftBlock);
+                outputStream.writeBoolean(collideToTopBlock);
 
-
-                    outputStream.writeBoolean(isExistHeartBlock);
-                    outputStream.writeBoolean(isGoldStatus);
-                    outputStream.writeBoolean(goDownBall);
-                    outputStream.writeBoolean(goRightBall);
-                    outputStream.writeBoolean(colideToBreak);
-                    outputStream.writeBoolean(colideToBreakAndMoveToRight);
-                    outputStream.writeBoolean(colideToRightWall);
-                    outputStream.writeBoolean(colideToLeftWall);
-                    outputStream.writeBoolean(colideToRightBlock);
-                    outputStream.writeBoolean(colideToBottomBlock);
-                    outputStream.writeBoolean(colideToLeftBlock);
-                    outputStream.writeBoolean(colideToTopBlock);
-
-                    ArrayList<BlockSerializable> blockSerializables = new ArrayList<BlockSerializable>();
-                    for (Block block : blocks) {
-                        if (block.isDestroyed) {
-                            continue;
-                        }
-                        blockSerializables.add(new BlockSerializable(block.row, block.column, block.type));
+                ArrayList<BlockSerializable> blockSerializables = new ArrayList<>();
+                for (Block block : blocks) {
+                    if (block.isDestroyed) {
+                        continue;
                     }
+                    blockSerializables.add(new BlockSerializable(block.row, block.column, block.type));
+                }
 
-                    outputStream.writeObject(blockSerializables);
+                outputStream.writeObject(blockSerializables);
 
-                    new Score().showMessage("Game Saved", Main.this);
+                new Score().showMessage("Game Saved", Main.this);
 
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (outputStream != null) {
                         outputStream.flush();
                         outputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
-
     }
+
+//    private void saveGame() {
+//        GameSaver.saveGame(this);
+//    }
+
 
     private void loadGame() {
 
@@ -526,14 +506,14 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         isGoldStatus = loadSave.isGoldStatus;
         goDownBall = loadSave.goDownBall;
         goRightBall = loadSave.goRightBall;
-        colideToBreak = loadSave.collideToBreak;
-        colideToBreakAndMoveToRight = loadSave.collideToBreakAndMoveToRight;
-        colideToRightWall = loadSave.collideToRightWall;
-        colideToLeftWall = loadSave.collideToLeftWall;
-        colideToRightBlock = loadSave.collideToRightBlock;
-        colideToBottomBlock = loadSave.collideToBottomBlock;
-        colideToLeftBlock = loadSave.collideToLeftBlock;
-        colideToTopBlock = loadSave.collideToTopBlock;
+        collideToBreak = loadSave.collideToBreak;
+        collideToBreakAndMoveToRight = loadSave.collideToBreakAndMoveToRight;
+        collideToRightWall = loadSave.collideToRightWall;
+        collideToLeftWall = loadSave.collideToLeftWall;
+        collideToRightBlock = loadSave.collideToRightBlock;
+        collideToBottomBlock = loadSave.collideToBottomBlock;
+        collideToLeftBlock = loadSave.collideToLeftBlock;
+        collideToTopBlock = loadSave.collideToTopBlock;
         level = loadSave.level;
         score = loadSave.score;
         heart = loadSave.heart;
@@ -567,33 +547,30 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
     private void nextLevel() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    vX = 1.000;
+        Platform.runLater(() -> {
+            try {
+                vX = 1.000;
 
-                    engine.stop();
-                    resetColideFlags();
-                    goDownBall = true;
+                engine.stop();
+                resetCollideFlags();
+                goDownBall = true;
 
-                    isGoldStatus = false;
-                    isExistHeartBlock = false;
+                isGoldStatus = false;
+                isExistHeartBlock = false;
 
 
-                    hitTime = 0;
-                    time = 0;
-                    goldTime = 0;
+                hitTime = 0;
+                time = 0;
+                goldTime = 0;
 
-                    engine.stop();
-                    blocks.clear();
-                    chocos.clear();
-                    destroyedBlockCount = 0;
-                    start(primaryStage);
+                engine.stop();
+                blocks.clear();
+                chocos.clear();
+                destroyedBlockCount = 0;
+                start(primaryStage);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -606,7 +583,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             score = 0;
             vX = 1.000;
             destroyedBlockCount = 0;
-            resetColideFlags();
+            resetCollideFlags();
             goDownBall = true;
 
             isGoldStatus = false;
@@ -627,21 +604,18 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     @Override
     public void onUpdate() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
+        Platform.runLater(() -> {
 
-                scoreLabel.setText("Score: " + score);
-                heartLabel.setText("Heart : " + heart);
+            scoreLabel.setText("Score: " + score);
+            heartLabel.setText("Heart : " + heart);
 
-                rect.setX(xBreak);
-                rect.setY(yBreak);
-                ball.setCenterX(xBall);
-                ball.setCenterY(yBall);
+            rect.setX(xBreak);
+            rect.setY(yBreak);
+            ball.setCenterX(xBall);
+            ball.setCenterY(yBall);
 
-                for (Bonus choco : chocos) {
-                    choco.choco.setY(choco.y);
-                }
+            for (Bonus choco : chocos) {
+                choco.choco.setY(choco.y);
             }
         });
 
@@ -658,17 +632,12 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     block.isDestroyed = true;
                     destroyedBlockCount++;
                     //System.out.println("size is " + blocks.size());
-                    resetColideFlags();
+                    resetCollideFlags();
 
                     if (block.type == Block.BLOCK_CHOCO) {
                         final Bonus choco = new Bonus(block.row, block.column);
                         choco.timeCreated = time;
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                root.getChildren().add(choco.choco);
-                            }
-                        });
+                        Platform.runLater(() -> root.getChildren().add(choco.choco));
                         chocos.add(choco);
                     }
 
@@ -685,13 +654,13 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     }
 
                     if (hitCode == Block.HIT_RIGHT) {
-                        colideToRightBlock = true;
+                        collideToRightBlock = true;
                     } else if (hitCode == Block.HIT_BOTTOM) {
-                        colideToBottomBlock = true;
+                        collideToBottomBlock = true;
                     } else if (hitCode == Block.HIT_LEFT) {
-                        colideToLeftBlock = true;
+                        collideToLeftBlock = true;
                     } else if (hitCode == Block.HIT_TOP) {
-                        colideToTopBlock = true;
+                        collideToTopBlock = true;
                     }
 
                 }
