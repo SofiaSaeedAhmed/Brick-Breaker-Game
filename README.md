@@ -13,6 +13,10 @@ List any features that have been
 implemented but are not working correctly. Explain the issues you encountered,
 and if possible, the steps you took to address them.
 
+**1- PaddleMove.java file**
+
+
+
 # Features Not Implemented: 
 Identify any features that you were unable to
 implement and provide a clear explanation for why they were left out.
@@ -44,7 +48,7 @@ code.
 
 `Main.java` had a `initBreak()` method in `public void start(Stage primaryStage) throws Exception` section and initialized further in the code. I separated this into a different file called `PaddleInitializer().java`.    
 
-**Purpose:** Refactoring the `initBall()` method into a different class can offer several advantages in terms of code organization, readability, and maintainability.    
+**Purpose:** Refactoring the `initBreak()` method into a different class can offer several advantages in terms of code organization, readability, and maintainability.    
 
 **Location:** This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.    
 
