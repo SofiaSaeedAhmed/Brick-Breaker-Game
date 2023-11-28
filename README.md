@@ -28,7 +28,7 @@ code.
 
 **1- New Board.java file made**
 
-`Main.java` had a `initBoard()` method which I separated into a different class file called `Board.java`.  
+`Main.java` had a `initBoard()` method which I separated into a different class file called `Board.java`. This class file also has a `get()` method.
 
 **Purpose:** This refactoring creates a Board class responsible for initializing and managing the game board. The Main class now creates an instance of Board and adds its blocks to the root of the scene. This separation enhances code organization and maintainability.  
 
