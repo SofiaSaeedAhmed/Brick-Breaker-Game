@@ -767,37 +767,47 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     @Override
     public void onPhysicsUpdate() {
+
+        // check if all blocks are destroyed
         checkDestroyedCount();
+
+        // check ball movement and collisions
         setPhysicsToBall();
 
-
+        // if gold ball stays for more than 5s, change it back to original ball and change to original background
         if (time - goldTime > 5000) {
             ball.setFill(new ImagePattern(new Image("ball.png")));
             root.getStyleClass().remove("goldRoot");
+
+            // set gold status back to false
             isGoldStatus = false;
         }
 
+        // Update the position of choco bonuses and check for collisions with the paddle.
         for (Bonus choco : chocos) {
-            if (choco.y > sceneHeighht || choco.taken) {
+            if (choco.y > sceneHeight || choco.taken) {
                 continue;
             }
             if (choco.y >= yBreak && choco.y <= yBreak + breakHeight && choco.x >= xBreak && choco.x <= xBreak + breakWidth) {
+                // If a choco bonus collides with the paddle, mark it as taken, hide it, and increase the score.
                 System.out.println("You Got it and +3 score for you");
                 choco.taken = true;
                 choco.choco.setVisible(false);
                 score += 3;
                 new Score().show(choco.x, choco.y, 3, this);
             }
+            // Update the Y position of the choco bonus based on its creation time.
             choco.y += ((time - choco.timeCreated) / 1000.000) + 1.000;
         }
 
-        //System.out.println("time is:" + time + " goldTime is " + goldTime);
-
     }
 
-
+    // This method is called to update the current time in the game.
     @Override
+    // sets the 'time' variable to the provided time value.
     public void onTime(long time) {
         this.time = time;
     }
+
+
 }
