@@ -108,11 +108,17 @@ In `GameEngine.java`, IntelliJ was giving an error indicating that `Thread.sleep
 
 These modifications improve the efficiency of the code by using a modern concurrency mechanism (ScheduledExecutorService) for scheduling tasks at fixed rates, eliminating the busy-waiting warning and providing a cleaner and more maintainable code structure and also reduces the amount of code written.    
 
-**2- Refactor the `setPhysicsToBall` method by breaking it down into separate functions**    
+**2- Refactor the `setPhysicsToBall` method in Main.java by breaking it down into separate functions**    
 
-I separated `setPhysicsToBall()` method into 4 different methods - `moveBall()` , `checkCollisionWithWalls()`, `checkCollisionWithPaddle()` and `checkCollisionWithBlocks()`
+I separated `setPhysicsToBall()` method into 4 different methods - `moveBall()` , `checkCollisionWithWalls()`, `checkCollisionWithPaddle()` and `checkCollisionWithBlocks()`. The `setPhysicsToBall()` method now calls these 4 methods.
 
-I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.
+I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.    
+
+**3- Refactor the `loadGame()` method in Main.java by breaking it down into separate functions**    
+
+I separated `loadGame()` method into 4 different methods- `updateGameParameters(LoadSave loadSave)`, `clearExistingBlocksAndChocolates()`, `populateBlocksFromSave(ArrayList<BlockSerializable> blockSerializables)` and  `RestartGamefromLoaded()`. The `loadGame()` method now creates a new instance of LoadSave class, reads the saved game state and calls the 4 methods.    
+
+I have reorganized the `loadGame()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.    
 
 # Unexpected Problems: 
 Communicate any unexpected challenges or issues you
