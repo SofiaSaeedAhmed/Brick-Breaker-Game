@@ -282,6 +282,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         }).start();
     }
 
+    // Ball movements
     private boolean goDownBall                  = true;     // ball moves down
     private boolean goRightBall                 = true;     // ball moves right
     private boolean collideToBreak               = false;   // whether ball has collided with the paddle
@@ -310,8 +311,9 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         collideToLeftBlock = false;
         collideToTopBlock = false;
     }
-    
 
+
+    // call other functions in this for ball movement and checking collisions
     private void setPhysicsToBall() {
         moveBall();
         checkCollisionWithWalls();
@@ -320,30 +322,42 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
     private void moveBall() {
-        double vY = 1.000;
+        double vY = 1.000;      // vertical velocity of ball
+
+        // if ball goes down, the yBall position is increased by vY
         if (goDownBall) {
             yBall += vY;
-        } else {
+        } else { // ball goes up, the yBall position decreased by vY
             yBall -= vY;
         }
 
+        // if ball goes right the xBall position increased by vX
         if (goRightBall) {
             xBall += vX;
-        } else {
+        } else { // if ball goes left, the xBall position is decreased by vX
             xBall -= vX;
         }
     }
 
     private void checkCollisionWithWalls() {
+
+        // top wall collision check
+        // if yBall position is less than or equal to zero
         if (yBall <= 0) {
             resetCollideFlags();
+            // ball moves down
             goDownBall = true;
             return;
         }
 
+        // bottom wall position check
         if (yBall >= sceneHeight) {
+            // go down is false, ball goes up
             goDownBall = false;
+
+            // if ball is not gold:
             if (!isGoldStatus) {
+                // live will be lost
                 heart--;
                 new Score().show((double) sceneWidth / 2, (double) sceneHeight / 2, -1, this);
 
@@ -354,11 +368,13 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             }
         }
 
+        // right wall collision
         if (xBall >= sceneWidth) {
             resetCollideFlags();
             collideToRightWall = true;
         }
 
+        // left wall collision
         if (xBall <= 0) {
             resetCollideFlags();
             collideToLeftWall = true;
@@ -366,15 +382,21 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
     private void checkCollisionWithPaddle() {
+        // condition is checking if the ball's vertical position is at or below the paddle's top edge, considering the ball's radius.
         if (yBall >= yBreak - ballRadius) {
+            // This checks if the ball is within the horizontal bounds of the paddle.
             if (xBall >= xBreak && xBall <= xBreak + breakWidth) {
+                // If the ball collides with the paddle:
                 hitTime = time;
                 resetCollideFlags();
                 collideToBreak = true;
                 goDownBall = false;
 
+                // calculates the relative position of the ball to the center of the paddle
                 double relation = (xBall - centerBreakX) / ((double) breakWidth / 2);
 
+                // Calculate Ball's Horizontal Velocity
+                    // adjusting the ball's movement based on its position relative to the paddle
                 if (Math.abs(relation) <= 0.3) {
                     vX = Math.abs(relation);
                 } else if (Math.abs(relation) > 0.3 && Math.abs(relation) <= 0.7) {
@@ -383,64 +405,80 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     vX = (Math.abs(relation) * 2) + (level / 3.500);
                 }
 
+                // Set Direction of Ball After Collision based on whether the ball is to the
+                // right or left of the paddle after the collision
                 collideToBreakAndMoveToRight = xBall - centerBreakX > 0;
             }
         }
     }
 
     private void checkCollisionWithBlocks() {
+        // if ball hits the paddle then go right is set according to collide to break and move to right (T or F)
         if (collideToBreak) {
             goRightBall = collideToBreakAndMoveToRight;
         }
 
+        // if it collides with the right wall, ball should move to left
         if (collideToRightWall) {
             goRightBall = false;
         }
 
+        // if it collides with left wall, ball should move to right
         if (collideToLeftWall) {
             goRightBall = true;
         }
 
+        // if it collides with a block to right, ball should go left
         if (collideToRightBlock) {
-            goRightBall = true;
+            goRightBall = false;
         }
 
+        // if it collides with a block to the left, ball should go right
         if (collideToLeftBlock) {
             goRightBall = true;
         }
 
+        // if it collides with the top of the block, it should go up
         if (collideToTopBlock) {
             goDownBall = false;
         }
 
+        // if it collides with the bottom of a block, it should go down
         if (collideToBottomBlock) {
             goDownBall = true;
         }
     }
 
-
-
     private void checkDestroyedCount() {
+        // Check if All Blocks are Destroyed
         if (destroyedBlockCount == blocks.size()) {
             //TODO win level todo...
-            //System.out.println("You Win");
+            System.out.println("You Win");      // print to console
 
             nextLevel();
         }
     }
 
     private void saveGame() {
+        // Initialize thread
         new Thread(() -> {
+            // create directory and file
             new File(savePathDir).mkdirs();
             File file = new File(savePath);
+            /// create output stream
             ObjectOutputStream outputStream = null;
             try {
+                // write primitive data types
+
+                // write game states
+
                 outputStream = new ObjectOutputStream(new FileOutputStream(file));
 
                 outputStream.writeInt(level);
                 outputStream.writeInt(score);
                 outputStream.writeInt(heart);
                 outputStream.writeInt(destroyedBlockCount);
+
 
                 outputStream.writeDouble(xBall);
                 outputStream.writeDouble(yBall);
@@ -451,6 +489,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 outputStream.writeLong(goldTime);
                 outputStream.writeDouble(vX);
 
+                // write boolean flags
                 outputStream.writeBoolean(isExistHeartBlock);
                 outputStream.writeBoolean(isGoldStatus);
                 outputStream.writeBoolean(goDownBall);
@@ -464,6 +503,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 outputStream.writeBoolean(collideToLeftBlock);
                 outputStream.writeBoolean(collideToTopBlock);
 
+                // write block information
                 ArrayList<BlockSerializable> blockSerializables = new ArrayList<>();
                 for (Block block : blocks) {
                     if (block.isDestroyed) {
@@ -471,6 +511,26 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     }
                     blockSerializables.add(new BlockSerializable(block.row, block.column, block.type));
                 }
+
+                outputStream.writeObject(blockSerializables);
+
+                // shows game saved message
+                new Score().showMessage("Game Saved", Main.this);
+
+            // exception handling
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+    }
 
                 outputStream.writeObject(blockSerializables);
 
