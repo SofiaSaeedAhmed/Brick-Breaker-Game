@@ -126,6 +126,21 @@ I have reorganized the `loadGame()` method into smaller, more focused methods to
 
 The `nextLevel()` method in `Main.java` had the statement `engine.stop()` written twice, so I deleted the redundant statement.    
 
+**5- Refactor `onUpdate()` method in Main.java by breaking it down into separate functions**    
+
+I separated `onUpdate()` method into 8 different methods- `updateUI()`, `isBallWithinBlockBounds()`, `checkBlockHits()`, `handleBlockHit(Block block, int hitCode)`, `handleChocoBlockHit(Block block)`, `handleStarBlockHit()`, `setCollisionFlags(int hitCode)`, and `updateChocos()`.    
+
+**6- Refactor `onUpdate()` method in Main.java by breaking it down into separate functions**    
+
+I separated `onPhysicsUpdate()` method into 2 different methods- `updateGoldBallEffect()` and `updateChocoBonusesPosition()`.    
+
+**7- Use of `clearExistingBlocksAndChocolates()`:**    
+
+I made this method while refactoring `loadGame()` and I used this in `restartGame()` and `nextLevel()` methods. I removed some lines of code in these methods and used this instead. Hence, it was visible that refactoring helps to make other methods smaller and concise as well.    
+
+**Use of enhanced switch statment**    
+
+In `handle(KeyEvent event)`, I made use of enhanced switch statement which makes the code more concise and easy to read.
 
 # Unexpected Problems: 
 Communicate any unexpected challenges or issues you
