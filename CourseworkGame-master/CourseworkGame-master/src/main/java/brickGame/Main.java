@@ -235,18 +235,9 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     @Override
     public void handle(KeyEvent event) {
         switch (event.getCode()) {
-            case LEFT:
-                move(LEFT);
-                break;
-            case RIGHT:
-                move(RIGHT);
-                break;
-            case DOWN:
-                //setPhysicsToBall();
-                break;
-            case S:
-                saveGame();
-                break;
+            case LEFT -> move(LEFT);
+            case RIGHT -> move(RIGHT);
+            case S -> saveGame();
         }
     }
 
@@ -282,10 +273,10 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         }).start();
     }
 
-    // Ball movements
-    private boolean goDownBall                  = true;     // ball moves down
-    private boolean goRightBall                 = true;     // ball moves right
-    private boolean collideToBreak               = false;   // whether ball has collided with the paddle
+    // ball movements
+    private boolean goDownBall                  = true;
+    private boolean goRightBall                 = true;
+    private boolean collideToBreak               = false;
     private boolean collideToBreakAndMoveToRight = true;
     private boolean collideToRightWall           = false;
     private boolean collideToLeftWall            = false;
@@ -453,7 +444,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         // Check if All Blocks are Destroyed
         if (destroyedBlockCount == blocks.size()) {
             //TODO win level todo...
-            System.out.println("You Win");      // print to console
+            //System.out.println("You Win");      // print to console
 
             nextLevel();
         }
@@ -532,7 +523,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     }
 
-// this method calls other methods to load the game
+    // this method calls other methods to load the game
     private void loadGame() {
 
         // create a new instance of LoadSave class
@@ -583,10 +574,10 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     private void populateBlocksFromSave(ArrayList<BlockSerializable> blockSerializables) {
         // Populate the blocks list with blocks from the saved state
-        for (BlockSerializable ser : blockSerializables) {
+        blockSerializables.forEach(ser -> {
             int r = new Random().nextInt(200);
             blocks.add(new Block(ser.row, ser.j, colors[r % colors.length], ser.type));
-        }
+        });
     }
 
     // Try to restart the game with the loaded state
@@ -601,7 +592,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
 
-// transition the game to the next level
+    // transition the game to the next level
     private void nextLevel() {
         // start thread
         Platform.runLater(() -> {
@@ -634,103 +625,140 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             }
         });
     }
-    
+
+    // restarts the whole game
     public void restartGame() {
 
         try {
+            // reset level, heart and score parameter to initial values
             level = 0;
             heart = 3;
             score = 0;
+
+            // reset x velocity of ball, destroyed block count and collide flags
             vX = 1.000;
             destroyedBlockCount = 0;
             resetCollideFlags();
+
+            // ball should now go down when games starts again
             goDownBall = true;
 
+            // resets gold status and heart block existence, time , hit time and gold time
             isGoldStatus = false;
             isExistHeartBlock = false;
             hitTime = 0;
             time = 0;
             goldTime = 0;
 
-            blocks.clear();
-            chocos.clear();
-
+            clearExistingBlocksAndChocolates();
             start(primaryStage);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    
+
+    // onUpdate method
     @Override
     public void onUpdate() {
-        Platform.runLater(() -> {
+        Platform.runLater(this::updateUI);
 
-            scoreLabel.setText("Score: " + score);
-            heartLabel.setText("Heart : " + heart);
+        if (isBallWithinBlockBounds()) {
+            checkBlockHits();
+        }
+    }
 
-            rect.setX(xBreak);
-            rect.setY(yBreak);
-            ball.setCenterX(xBall);
-            ball.setCenterY(yBall);
+    // Method to update UI elements
+    private void updateUI() {
+        scoreLabel.setText("Score: " + score);
+        heartLabel.setText("Heart : " + heart);
 
-            for (Bonus choco : chocos) {
-                choco.choco.setY(choco.y);
-            }
-        });
+        rect.setX(xBreak);
+        rect.setY(yBreak);
 
+        ball.setCenterX(xBall);
+        ball.setCenterY(yBall);
 
-        if (yBall >= Block.getPaddingTop() && yBall <= (Block.getHeight() * (level + 1)) + Block.getPaddingTop()) {
-            for (final Block block : blocks) {
-                int hitCode = block.checkHitToBlock(xBall, yBall);
-                if (hitCode != Block.NO_HIT) {
-                    score += 1;
+        updateChocos();
+    }
 
-                    new Score().show(block.x, block.y, 1, this);
+    // Method to check if the ball is within the vertical bounds where blocks are present
+    private boolean isBallWithinBlockBounds() {
+        return yBall >= Block.getPaddingTop() && yBall <= (Block.getHeight() * (level + 1)) + Block.getPaddingTop();
+    }
 
-                    block.rect.setVisible(false);
-                    block.isDestroyed = true;
-                    destroyedBlockCount++;
-                    //System.out.println("size is " + blocks.size());
-                    resetCollideFlags();
+    // Method to check if the ball hits a block and handle accordingly
+    private void checkBlockHits() {
+        for (final Block block : blocks) {
+            int hitCode = block.checkHitToBlock(xBall, yBall);
 
-                    if (block.type == Block.BLOCK_CHOCO) {
-                        final Bonus choco = new Bonus(block.row, block.column);
-                        choco.timeCreated = time;
-                        Platform.runLater(() -> root.getChildren().add(choco.choco));
-                        chocos.add(choco);
-                    }
-
-                    if (block.type == Block.BLOCK_STAR) {
-                        goldTime = time;
-                        ball.setFill(new ImagePattern(new Image("goldball.png")));
-                        System.out.println("gold ball");
-                        root.getStyleClass().add("goldRoot");
-                        isGoldStatus = true;
-                    }
-
-                    if (block.type == Block.BLOCK_HEART) {
-                        heart++;
-                    }
-
-                    if (hitCode == Block.HIT_RIGHT) {
-                        collideToRightBlock = true;
-                    } else if (hitCode == Block.HIT_BOTTOM) {
-                        collideToBottomBlock = true;
-                    } else if (hitCode == Block.HIT_LEFT) {
-                        collideToLeftBlock = true;
-                    } else if (hitCode == Block.HIT_TOP) {
-                        collideToTopBlock = true;
-                    }
-
-                }
-
-                //TODO hit to break and some work here....
-                //System.out.println("Break in row:" + block.row + " and column:" + block.column + " hit");
+            if (hitCode != Block.NO_HIT) {
+                handleBlockHit(block, hitCode);
             }
         }
     }
 
+    // Method to handle the effects of hitting a block
+    private void handleBlockHit(Block block, int hitCode) {
+        score += 1;
+        new Score().show(block.x, block.y, 1, this);
+        block.rect.setVisible(false);
+        block.isDestroyed = true;
+        destroyedBlockCount++;
+        resetCollideFlags();
+
+        if (block.type == Block.BLOCK_CHOCO) {
+            handleChocoBlockHit(block);
+        }
+
+        if (block.type == Block.BLOCK_STAR) {
+            handleStarBlockHit();
+        }
+
+        if (block.type == Block.BLOCK_HEART) {
+            heart++;
+        }
+
+        setCollisionFlags(hitCode);
+    }
+
+    // Method to handle the effects of hitting a choco block
+    private void handleChocoBlockHit(Block block) {
+        final Bonus choco = new Bonus(block.row, block.column);
+        choco.timeCreated = time;
+        Platform.runLater(() -> root.getChildren().add(choco.choco));
+        chocos.add(choco);
+    }
+
+    // Method to handle the effects of hitting a star block
+    private void handleStarBlockHit() {
+        goldTime = time;
+        ball.setFill(new ImagePattern(new Image("goldball.png")));
+        System.out.println("gold ball");
+        root.getStyleClass().add("goldRoot");
+        isGoldStatus = true;
+    }
+
+    // Method to set collision flags based on hit code
+    private void setCollisionFlags(int hitCode) {
+        if (hitCode == Block.HIT_RIGHT) {
+            collideToRightBlock = true;
+        } else if (hitCode == Block.HIT_BOTTOM) {
+            collideToBottomBlock = true;
+        } else if (hitCode == Block.HIT_LEFT) {
+            collideToLeftBlock = true;
+        } else if (hitCode == Block.HIT_TOP) {
+            collideToTopBlock = true;
+        }
+    }
+
+    // Method to update the position of choco bonuses
+    private void updateChocos() {
+        for (Bonus choco : chocos) {
+            choco.choco.setY(choco.y);
+        }
+    }
 
     @Override
     public void onInit() {
@@ -750,7 +778,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         }
 
         for (Bonus choco : chocos) {
-            if (choco.y > sceneHeight || choco.taken) {
+            if (choco.y > sceneHeighht || choco.taken) {
                 continue;
             }
             if (choco.y >= yBreak && choco.y <= yBreak + breakHeight && choco.x >= xBreak && choco.x <= xBreak + breakWidth) {
