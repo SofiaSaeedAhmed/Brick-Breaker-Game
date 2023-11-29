@@ -138,7 +138,7 @@ I separated `onPhysicsUpdate()` method into 2 different methods- `updateGoldBall
 
 I made this method while refactoring `loadGame()` and I used this in `restartGame()` and `nextLevel()` methods. I removed some lines of code in these methods and used this instead. Hence, it was visible that refactoring helps to make other methods smaller and concise as well.    
 
-**Use of enhanced switch statment**    
+**8- Use of enhanced switch statment**    
 
 In `handle(KeyEvent event)`, I made use of enhanced switch statement which makes the code more concise and easy to read.
 
