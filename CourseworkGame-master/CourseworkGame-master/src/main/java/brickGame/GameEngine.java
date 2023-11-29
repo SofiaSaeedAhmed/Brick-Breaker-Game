@@ -25,9 +25,7 @@ public class GameEngine {
     private synchronized void Update() {
         scheduler = Executors.newScheduledThreadPool(2);
 
-        scheduler.scheduleAtFixedRate(() -> {
-            onAction.onUpdate();
-        }, 0, fps, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(() -> onAction.onUpdate(), 0, fps, TimeUnit.MILLISECONDS);
     }
 
     // initializes the game engine
@@ -42,12 +40,15 @@ public class GameEngine {
         }, 0, fps, TimeUnit.MILLISECONDS);
     }
 
-    // method starts the time keeping loop on the time-thread
+
     private void TimeStart() {
+        // Add a new task to the existing scheduler for time updates
         scheduler.scheduleAtFixedRate(() -> {
+            time++;
             onAction.onTime(time);
         }, 0, 1, TimeUnit.MILLISECONDS);
     }
+
 
     // method starts game engine
     public void start() {
@@ -84,4 +85,3 @@ public class GameEngine {
         void onTime(long time);      // Invoked to notify listeners about the elapsed time in the game.
     }
 }
-
