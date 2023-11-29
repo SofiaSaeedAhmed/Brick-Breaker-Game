@@ -60,7 +60,7 @@ necessary.
 
 **1- Lambda expressions Added**    
 
-**=** In `GameEngine.java`, for all the Threads, I changed `Runnable()` to lambda expressions. I also removed `@Override` in the classes to simplify the syntax.  
+* In `GameEngine.java`, for all the Threads, I changed `Runnable()` to lambda expressions. I also removed `@Override` in the classes to simplify the syntax.  
 
 **>** In `Main.java` for the part `load.setOnAction(Event ->{`, I added lambda expression at all places and removed `@Override` in the code to simplify the syntax.    
 
