@@ -68,6 +68,8 @@ necessary.
 
   By using the diamond operator, the compiler will infer the generic type (in this case, Block) based on the left-hand side of the assignment. This can make your   code cleaner and more concise.
 
+* In `Main.java` for the `nextLevel()` method, I changed `Runnable()` to lambda expressions.
+
 
 **2- Changed threads in GameEngine**  
 
@@ -119,6 +121,11 @@ I have reorganized the `setPhysicsToBall()` method into smaller, more focused me
 I separated `loadGame()` method into 4 different methods- `updateGameParameters(LoadSave loadSave)`, `clearExistingBlocksAndChocolates()`, `populateBlocksFromSave(ArrayList<BlockSerializable> blockSerializables)` and  `RestartGamefromLoaded()`. The `loadGame()` method now creates a new instance of LoadSave class, reads the saved game state and calls the 4 methods.    
 
 I have reorganized the `loadGame()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.    
+
+**4- Remove Redundant statement**    
+
+The `nextLevel()` method in `Main.java` had the statement `engine.stop()` written twice, so I deleted the redundant statement.    
+
 
 # Unexpected Problems: 
 Communicate any unexpected challenges or issues you
