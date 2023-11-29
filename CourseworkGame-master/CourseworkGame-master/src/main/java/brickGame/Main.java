@@ -601,38 +601,40 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
 
+// transition the game to the next level
     private void nextLevel() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    vX = 1.000;
+        // start thread
+        Platform.runLater(() -> {
+            try {
+                // Sets the horizontal velocity of the ball to 1
+                vX = 1.000;
 
-                    engine.stop();
-                    resetCollideFlags();
-                    goDownBall = true;
+                // stop game engine, reset all flags and ball goes down to true
+                engine.stop();
+                resetCollideFlags();
+                goDownBall = true;
 
-                    isGoldStatus = false;
-                    isExistHeartBlock = false;
+                // resets gold status and if heart exists
+                isGoldStatus = false;
+                isExistHeartBlock = false;
 
+                // reset hit time, time and gold time
+                hitTime = 0;
+                time = 0;
+                goldTime = 0;
 
-                    hitTime = 0;
-                    time = 0;
-                    goldTime = 0;
+                clearExistingBlocksAndChocolates();
 
-                    engine.stop();
-                    blocks.clear();
-                    chocos.clear();
-                    destroyedBlockCount = 0;
-                    start(primaryStage);
+                // reset count of destroyed blocks and start primary stage
+                destroyedBlockCount = 0;
+                start(primaryStage);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
-
+    
     public void restartGame() {
 
         try {
