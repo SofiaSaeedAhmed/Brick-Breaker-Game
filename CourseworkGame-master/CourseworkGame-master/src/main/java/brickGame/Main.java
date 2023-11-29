@@ -532,36 +532,22 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     }
 
-                outputStream.writeObject(blockSerializables);
-
-                new Score().showMessage("Game Saved", Main.this);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (outputStream != null) {
-                        outputStream.flush();
-                        outputStream.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-//    private void saveGame() {
-//        GameSaver.saveGame(this);
-//    }
-
-
+// this method calls other methods to load the game
     private void loadGame() {
 
+        // create a new instance of LoadSave class
         LoadSave loadSave = new LoadSave();
-        loadSave.read();
+        loadSave.read();                    // read the saved game state
 
+        // call other methods
+        updateGameParameters(loadSave);
+        clearExistingBlocksAndChocolates();
+        populateBlocksFromSave(loadSave.blocks);
+        RestartGamefromLoaded();
+    }
 
+    private void updateGameParameters(LoadSave loadSave) {
+        // Update various game parameters with the loaded values
         isExistHeartBlock = loadSave.isExistHeartBlock;
         isGoldStatus = loadSave.isGoldStatus;
         goDownBall = loadSave.goDownBall;
@@ -587,50 +573,62 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         goldTime = loadSave.goldTime;
         vX = loadSave.vX;
 
+    }
+
+    private void clearExistingBlocksAndChocolates() {
+        // Clear existing blocks and chocolates
         blocks.clear();
         chocos.clear();
+    }
 
-        for (BlockSerializable ser : loadSave.blocks) {
+    private void populateBlocksFromSave(ArrayList<BlockSerializable> blockSerializables) {
+        // Populate the blocks list with blocks from the saved state
+        for (BlockSerializable ser : blockSerializables) {
             int r = new Random().nextInt(200);
             blocks.add(new Block(ser.row, ser.j, colors[r % colors.length], ser.type));
         }
+    }
 
-
+    // Try to restart the game with the loaded state
+    private void RestartGamefromLoaded() {
         try {
+            // sets flag to true and calls start()
             loadFromSave = true;
             start(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
+
     private void nextLevel() {
-        Platform.runLater(() -> {
-            try {
-                vX = 1.000;
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    vX = 1.000;
 
-                engine.stop();
-                resetCollideFlags();
-                goDownBall = true;
+                    engine.stop();
+                    resetCollideFlags();
+                    goDownBall = true;
 
-                isGoldStatus = false;
-                isExistHeartBlock = false;
+                    isGoldStatus = false;
+                    isExistHeartBlock = false;
 
 
-                hitTime = 0;
-                time = 0;
-                goldTime = 0;
+                    hitTime = 0;
+                    time = 0;
+                    goldTime = 0;
 
-                engine.stop();
-                blocks.clear();
-                chocos.clear();
-                destroyedBlockCount = 0;
-                start(primaryStage);
+                    engine.stop();
+                    blocks.clear();
+                    chocos.clear();
+                    destroyedBlockCount = 0;
+                    start(primaryStage);
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -661,7 +659,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         }
     }
 
-
+    
     @Override
     public void onUpdate() {
         Platform.runLater(() -> {
