@@ -1,4 +1,29 @@
-{
+package brickGame;
+
+// imports for javaFx
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+
+
+// imports for other functionality
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Random;
+
+
+public class Main extends Application implements EventHandler<KeyEvent>, GameEngine.OnAction {
 
     private int level = 0;      // current game level
 
@@ -127,7 +152,7 @@
 
 
         root = new Pane();          // Creates a new Pane named root to serve as the root container for the UI elements.
-        
+
         // initialize score, level and heart label on the pane
         scoreLabel = new Label("Score: " + score);
         levelLabel = new Label("Level: " + level);
@@ -367,7 +392,7 @@
                 double relation = (xBall - centerBreakX) / ((double) breakWidth / 2);
 
                 // Calculate Ball's Horizontal Velocity
-                    // adjusting the ball's movement based on its position relative to the paddle
+                // adjusting the ball's movement based on its position relative to the paddle
                 if (Math.abs(relation) <= 0.3) {
                     vX = Math.abs(relation);
                 } else if (Math.abs(relation) > 0.3 && Math.abs(relation) <= 0.7) {
@@ -488,7 +513,7 @@
                 // shows game saved message
                 new Score().showMessage("Game Saved", Main.this);
 
-            // exception handling
+                // exception handling
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -739,18 +764,7 @@
             choco.choco.setY(choco.y);
         }
     }
-
-    public void pauseGame() {
-        engine.pause();
-    }
-
-    public void resumeGame() {
-        engine.resume();
-    }
-
-    public boolean isPaused() {
-        return engine.isPaused();
-    }
+    
 
     private void togglePause() {
         if (engine != null) {
@@ -855,3 +869,4 @@
     }
 
 }
+
