@@ -1,28 +1,4 @@
-package brickGame;
-
-// imports for javaFx
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
-
-
-// imports for other functionality
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Random;
-
-public class Main extends Application implements EventHandler<KeyEvent>, GameEngine.OnAction {
+{
 
     private int level = 0;      // current game level
 
@@ -48,12 +24,15 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private boolean isGoldStatus      = false;
     private boolean isExistHeartBlock = false;
 
+    // flag to indicate resume countdown
+    private boolean isCountingDown = false;
+
     private Rectangle rect;             // represents a rectangle
     private final int ballRadius = 10;
 
     private int destroyedBlockCount = 0;        // counts the number of blocks destroyed
 
-    private int  heart    = 3;      // intial number of lives
+    private int  heart    = 3;      // initial number of lives
     private int  score    = 0;
 
     // time related variables
@@ -148,7 +127,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
 
         root = new Pane();          // Creates a new Pane named root to serve as the root container for the UI elements.
-
+        
         // initialize score, level and heart label on the pane
         scoreLabel = new Label("Score: " + score);
         levelLabel = new Label("Level: " + level);
@@ -238,6 +217,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             case LEFT -> move(LEFT);
             case RIGHT -> move(RIGHT);
             case S -> saveGame();
+            case P -> togglePause();
         }
     }
 
@@ -760,30 +740,95 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         }
     }
 
+    public void pauseGame() {
+        engine.pause();
+    }
+
+    public void resumeGame() {
+        engine.resume();
+    }
+
+    public boolean isPaused() {
+        return engine.isPaused();
+    }
+
+    private void togglePause() {
+        if (engine != null) {
+            if (engine.isPaused()) {
+                startResumeCountdown();
+            } else {
+                engine.pause();
+            }
+        }
+    }
+
+    private void startResumeCountdown() {
+        if (engine.isPaused()) {
+            // If already paused, initiate countdown and then resume
+            countdownAndResume();
+        }
+    }
+
+    private void countdownAndResume() {
+        isCountingDown = true;
+        // Display countdown timer on the screen
+        new Thread(() -> {
+            try {
+                for (int i = 3; i > 0; i--) {
+                    final int count = i;
+                    Platform.runLater(() -> new Score().showMessage(String.valueOf(count), Main.this));
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                Platform.runLater(() -> {
+                    isCountingDown = false;
+                    engine.resume();
+                });
+            }
+        }).start();
+    }
+
     @Override
     public void onInit() {
 
     }
 
+
     @Override
     public void onPhysicsUpdate() {
 
-        // check if all blocks are destroyed
+        // Check if all blocks are destroyed and perform necessary actions
         checkDestroyedCount();
 
-        // check ball movement and collisions
+        // Update the physics of the ball based on its movement and collisions
         setPhysicsToBall();
 
-        // if gold ball stays for more than 5s, change it back to original ball and change to original background
-        if (time - goldTime > 5000) {
+        // Check if the gold ball effect duration has exceeded 5000 milliseconds.
+        updateGoldBallEffect();
+
+        // Update the position of choco bonuses and check for collisions with the paddle.
+        updateChocoBonusesPosition();
+
+    }
+
+    // Method to update the gold ball effect
+    private void updateGoldBallEffect() {
+        if (goldTime > 0 && time - goldTime > 5000) {
             ball.setFill(new ImagePattern(new Image("ball.png")));
             root.getStyleClass().remove("goldRoot");
 
-            // set gold status back to false
+            // Set gold status back to false
             isGoldStatus = false;
-        }
 
-        // Update the position of choco bonuses and check for collisions with the paddle.
+            // Reset goldTime after the effect is removed
+            goldTime = 0;
+        }
+    }
+
+    // Method to update the position of choco bonuses and check for collisions with the paddle
+    private void updateChocoBonusesPosition() {
         for (Bonus choco : chocos) {
             if (choco.y > sceneHeight || choco.taken) {
                 continue;
@@ -799,8 +844,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             // Update the Y position of the choco bonus based on its creation time.
             choco.y += ((time - choco.timeCreated) / 1000.000) + 1.000;
         }
-
     }
+
 
     // This method is called to update the current time in the game.
     @Override
@@ -808,6 +853,5 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     public void onTime(long time) {
         this.time = time;
     }
-
 
 }
