@@ -10,6 +10,7 @@ public class GameEngine {
     private int fps = 15;               // frames per second, initially set to 15
     private ScheduledExecutorService scheduler; // more modern and flexible way to schedule tasks at fixed rates or with fixed delays.
     public boolean isStopped = true;        // a boolean flag indicating whether the game engine is currently stopped. Initially set to true
+    private boolean paused = false;
 
     // setting the onAction instance, which implements game-related actions
     public void setOnAction(OnAction onAction) {
@@ -25,7 +26,13 @@ public class GameEngine {
     private synchronized void Update() {
         scheduler = Executors.newScheduledThreadPool(2);
 
-        scheduler.scheduleAtFixedRate(() -> onAction.onUpdate(), 0, fps, TimeUnit.MILLISECONDS);
+        //scheduler.scheduleAtFixedRate(() -> onAction.onUpdate(), 0, fps, TimeUnit.MILLISECONDS);
+
+        scheduler.scheduleAtFixedRate(() -> {
+            if (!paused) {
+                onAction.onUpdate();
+            }
+        }, 0, fps, TimeUnit.MILLISECONDS);
     }
 
     // initializes the game engine
@@ -35,8 +42,14 @@ public class GameEngine {
 
     // responsible for starting the physics calculation loop on the physics thread
     private synchronized void PhysicsCalculation() {
+//        scheduler.scheduleAtFixedRate(() -> {
+//            onAction.onPhysicsUpdate();
+//        }, 0, fps, TimeUnit.MILLISECONDS);
+
         scheduler.scheduleAtFixedRate(() -> {
-            onAction.onPhysicsUpdate();
+            if (!paused) {
+                onAction.onPhysicsUpdate();
+            }
         }, 0, fps, TimeUnit.MILLISECONDS);
     }
 
@@ -71,6 +84,22 @@ public class GameEngine {
             }
         }
     }
+
+
+    public void pause() {
+        paused = true;
+    }
+
+    public void resume() {
+        paused = false;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+
+
 
     private long time = 0;      // variable keeps track of elapsed time in the game
 
