@@ -764,7 +764,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             choco.choco.setY(choco.y);
         }
     }
-    
+
 
     private void togglePause() {
         if (engine != null) {
@@ -830,8 +830,10 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     // Method to update the gold ball effect
     private void updateGoldBallEffect() {
         if (goldTime > 0 && time - goldTime > 5000) {
-            ball.setFill(new ImagePattern(new Image("ball.png")));
+
+            // Remove the "goldRoot" style class
             root.getStyleClass().remove("goldRoot");
+            ball.setFill(new ImagePattern(new Image("ball.png")));
 
             // Set gold status back to false
             isGoldStatus = false;
@@ -840,6 +842,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             goldTime = 0;
         }
     }
+
 
     // Method to update the position of choco bonuses and check for collisions with the paddle
     private void updateChocoBonusesPosition() {
@@ -869,4 +872,3 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
 }
-
