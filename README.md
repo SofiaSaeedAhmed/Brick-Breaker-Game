@@ -13,8 +13,8 @@ List any features that have been
 implemented but are not working correctly. Explain the issues you encountered,
 and if possible, the steps you took to address them.
 
-**1- PaddleMove.java file**
-
+**1- Show message in Score.java file**    
+The `score.java` file had a problem in the `showMessage()` method due to which the animations such as "Level Up" or "+1" for score kept getting stuck on the screen instead of disappearing in some time. To fix the problem, I created a JavaFX `Timeline` object, which allows you to define actions that should occur at specified intervals. This fixed the problem of display staying for a while, however, still sometimes "+1" or "-1" doesnt appear when a brick is broken or lives are lost (heart gets reduced tho).
 
 
 # Features Not Implemented: 
@@ -146,3 +146,9 @@ In `handle(KeyEvent event)`, I made use of enhanced switch statement which makes
 Communicate any unexpected challenges or issues you
 encountered during the assignment. Describe how you addressed or attempted to
 resolve them.
+
+**1- Gold Ball background**
+In the method, `updateGoldBallEffect()`, it is written that if the Gold ball has stayed from 5 seconds, it should be converted back to the normal ball. Even tho the gold ball goes back to normal ball and the functionality also changes from gold ball to normal ball, the problem is that sometimes the goldRoot is not removed so the background stays until the next level comes. 
+This problem should not come as I have coded `root.getStyleClass().remove("goldRoot");` and `ball.setFill(new ImagePattern(new Image("ball.png")));` one after the other, so if one picture is changing the background should also be changed. The functionality of the game however is not affected and it runs smoothly.    
+
+I tried my best to fix this error but it still occurs sometimes.
