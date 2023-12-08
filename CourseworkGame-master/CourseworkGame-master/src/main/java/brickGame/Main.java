@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -95,6 +95,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private Label            scoreLabel;
     private Label            heartLabel;
     public Label            levelLabel;
+    public Label            welcome;
 
     private boolean loadFromSave = false;   // Flag to indicate whether to load the game from a save file.
 
@@ -104,17 +105,49 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     Button load    = null;
     Button newGame = null;
 
+    private boolean gameStarted = false;  // Flag to track whether the game has started
+
     @Override
-    // takes primary stage as parameter for javafx
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        if(!gameStarted){
+            createMainMenu();  // Show the main menu initially
+            gameStarted = true;
+        }
+        else {
+            startGame();
+        }
+        primaryStage.setTitle("Brick Breaker Main Menu");
+        primaryStage.show();
+    }
 
+    private void createMainMenu() {
+        root = new Pane();
+        // Load and set the background image
+        Image backgroundImage = new Image("file:C:\\Users\\sofia\\OneDrive\\Desktop\\CourseworkGame-master\\CourseworkGame-master\\src\\main\\resources\\Sofia's game background.png");
+        root.setBackground(new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
 
+        // Set up the start button
+        Button startButton = new Button("Start Game");
+        startButton.setTranslateX(220);
+        startButton.setTranslateY(430);
+
+        // Make the button invisible
+        startButton.setOpacity(0.0);
+
+        startButton.setOnAction(event -> startGame());
+
+        root.getChildren().addAll(startButton);
+        Scene menuScene = new Scene(root, sceneWidth, sceneHeight);
+        primaryStage.setScene(menuScene);
+    }
+
+    private void startGame() {
         // checks if game is being loaded from save, if not, it proceeds to set up the initial stage for new game
         if (!loadFromSave) {
             level++;
             // if game is not loaded and level is greater than 1, it displays level up
-            if (level >1){
+            if (level > 1) {
                 new Score().showMessage("Level Up :)", this);
             }
             // if level 18 is reached, it shows that you have won
@@ -129,7 +162,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             yBall = random.nextInt(sceneHeight - 200) + ((level + 1) * Block.getHeight()) + 15;
 
             // calls ball initializer
-            ball =  BallInitializer.initBall(ballRadius);
+            ball = BallInitializer.initBall(ballRadius);
 
             // calls paddle initializer
             rect = PaddleInitializer.initPaddle(xBreak, yBreak, breakWidth, breakHeight);
@@ -137,7 +170,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             // Initialize the Board
             Board board = new Board(level);
             blocks = board.getBlocks(); // Retrieve blocks from the Board
-
 
             // button initialization
             load = new Button("Load Game");
@@ -150,8 +182,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             newGame.setTranslateY(340);
         }
 
-
-        root = new Pane();          // Creates a new Pane named root to serve as the root container for the UI elements.
+        root = new Pane(); // Creates a new Pane named root to serve as the root container for the UI elements.
 
         // initialize score, level and heart label on the pane
         scoreLabel = new Label("Score: " + score);
@@ -160,7 +191,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         heartLabel = new Label("Heart : " + heart);
         heartLabel.setTranslateX(sceneWidth - 70);
 
-        // if game is not loaded then add elements, as well as newGame button
+        // if the game is not loaded, then add elements, as well as newGame button
         if (!loadFromSave) {
             root.getChildren().addAll(rect, ball, scoreLabel, heartLabel, levelLabel, newGame);
         } else {
@@ -168,7 +199,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             root.getChildren().addAll(rect, ball, scoreLabel, heartLabel, levelLabel);
         }
 
-        // iterated through block list and adds corresponding rect elements to root
+        // iterate through the block list and add corresponding rect elements to root
         for (Block block : blocks) {
             root.getChildren().add(block.rect);
         }
@@ -180,15 +211,14 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         scene.getStylesheets().add("style.css");
         scene.setOnKeyPressed(this);
 
-
         primaryStage.setTitle("The Brick Breaker Game");
-        // set scene for primary stage and show
+        // set scene for the primary stage and show
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        // check if game is loaded from save file
+        // check if the game is loaded from a save file
         if (!loadFromSave) {
-            // game not loaded so checks level
+            // the game is not loaded so check level
             if (level > 1 && level < 8) {
 
                 // hide load game and start new game buttons
@@ -203,7 +233,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             }
 
             load.setOnAction(Event -> {
-                // calls load game method
+                // calls the load game method
                 loadGame();
                 // hide buttons
                 load.setVisible(false);
@@ -219,7 +249,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 load.setVisible(false);
                 newGame.setVisible(false);
             });
-        } else // if new game is loaded from save, creates a new instance of game engine
+        } else // if a new game is loaded from a save, create a new instance of the game engine
         {
             engine = new GameEngine();
             engine.setOnAction(this);
@@ -228,6 +258,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             loadFromSave = false;
         }
     }
+
+
 
 
     // Entry point of JavaFX application
@@ -242,14 +274,13 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             case LEFT -> move(LEFT);
             case RIGHT -> move(RIGHT);
             case S -> saveGame();
-            case P -> togglePause();
+            case SPACE -> togglePause();
         }
     }
 
-    // float oldXBreak;
+
 
     //  responsible for handling the paddle's movement
-
     private void move(final int direction) {        // direction tells whether to move left or right
         new Thread(() -> {
             int sleepTime = 4;
@@ -872,3 +903,4 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
 }
+
