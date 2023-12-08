@@ -43,7 +43,7 @@ public class Score {
                     label.setScaleX(i);                 // set x axis of label to current value of i
                     label.setScaleY(i);                 // set y-axis of label to current value of i
                     label.setOpacity((20 - i) / 20.0);  // set opacity of label based on current iteration
-                                                        // gives fading effect
+                    // gives fading effect
                     Thread.sleep(15);              // thread sleeps for 15 ms
                 } catch (InterruptedException e) {
                     e.printStackTrace();                // thread stops if interrupted, exception handling
@@ -61,6 +61,7 @@ public class Score {
             main.root.getChildren().add(label);
         });
 
+        // add timeline to fix label errors
         Timeline timeline = new Timeline();
         timeline.getKeyFrames().add(new KeyFrame(
                 Duration.millis(300),
