@@ -124,7 +124,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private void createMainMenu() {
         root = new Pane();
         // Load and set the background image
-        Image backgroundImage = new Image("file:C:\\Users\\sofia\\OneDrive\\Desktop\\CourseworkGame-master\\CourseworkGame-master\\src\\main\\resources\\Sofia's game background.png");
+        Image backgroundImage = new Image("bg.png");
         root.setBackground(new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
 
         // Set up the start button
