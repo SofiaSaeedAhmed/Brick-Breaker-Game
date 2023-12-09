@@ -52,6 +52,12 @@ code.
 
 **Location:** This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.    
 
+**4- New ButtonStyleHelper.java file made**    
+
+I wanted to style the `Begin Playing` button in `startGame()` method declared in Main.java file so I made a separate class file to put the styling code for the button.    
+
+**Location:** This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.    
+
 
 # Modified Java Classes:
 List the Java classes you modified from the provided code
