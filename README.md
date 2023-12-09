@@ -14,6 +14,7 @@ implemented but are not working correctly. Explain the issues you encountered,
 and if possible, the steps you took to address them.
 
 **1- Show message in Score.java file**    
+
 The `score.java` file had a problem in the `showMessage()` method due to which the animations such as "Level Up" or "+1" for score kept getting stuck on the screen instead of disappearing in some time. To fix the problem, I created a JavaFX `Timeline` object, which allows you to define actions that should occur at specified intervals. This fixed the problem of display staying for a while, however, still sometimes "+1" or "-1" doesnt appear when a brick is broken or lives are lost (heart gets reduced tho).
 
 
