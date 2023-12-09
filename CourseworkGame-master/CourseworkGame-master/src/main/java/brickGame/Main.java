@@ -175,10 +175,14 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             load = new Button("Load Game");
             newGame = new Button("Start New Game");
 
+            // button initialization using ButtonStyleHelper
+            load = ButtonStyleHelper.createStyledButton("Load Game");
+            newGame = ButtonStyleHelper.createStyledButton("Begin Playing");
+
             // set button position
-            load.setTranslateX(220);
+            load.setTranslateX(190);
             load.setTranslateY(300);
-            newGame.setTranslateX(220);
+            newGame.setTranslateX(190);
             newGame.setTranslateY(340);
         }
 
