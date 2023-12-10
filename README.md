@@ -169,9 +169,9 @@ I separated `start(Stage primaryStage)` method in 3 different methods- `createMa
 
 **Functions of each method**  
 
-* _**createMainMenu():**_ Sets up a main screen which loads when the game is launched. It displays the keys used to play and a start button.
+* _**createMainMenu():**_ Sets up a main screen which loads when the game is launched. It displays the keys used to play and a start button. I designed the background image using _Canva_.
   
-* _**showWinScreen():**_ Sets up a screen which is displayed when player wins the game and also displays the total score. Moreover, it has a play again button.
+* _**showWinScreen():**_ Sets up a screen which is displayed when player wins the game and also displays the total score. It has a background image with I designed using _Canva_ and it has a play again button as well which restarts the game from scratch.
   
 * _**startGame():**_ This initializes all the UI components and other variables of the game. Also defines the levels of the game and calls the `paddleInitializer.java` class.
 
@@ -222,7 +222,15 @@ I made this method while refactoring `loadGame()` and I used this in `restartGam
 
 **3- Use of enhanced switch statment**    
 
-In `handle(KeyEvent event)`, I made use of enhanced switch statement which makes the code more concise and easy to read.
+In `handle(KeyEvent event)`, I made use of enhanced switch statement which makes the code more concise and easy to read.    
+
+**4- Lost Game screen**    
+
+I changed the `showGameOver()` method in `Score.java` class to now display a screen with an image background which displays that the player has lost. Moreover, it also gives a play again button which restarts the game.    
+
+**5- Remove showWin() method**    
+
+I removed the `showWin()` method in the `Score.java` class as I have already designed a `showWinScreen()` method in the `main.java` class which does the job.
 
 # Unexpected Problems: 
 Communicate any unexpected challenges or issues you
