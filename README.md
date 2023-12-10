@@ -4,6 +4,12 @@ Provide a clear, step-by-step guide on how to compile the
 code to produce the application. Include any dependencies or special settings
 required.
 
+# Additions:
+
+**1- Pause and resume with countdown feature**    
+
+This feature pauses the game when player presses the space bar. 
+
 # Implemented and Working Properly: 
 List the features that have been successfully
 implemented and are functioning as expected. Provide a brief description of each.
