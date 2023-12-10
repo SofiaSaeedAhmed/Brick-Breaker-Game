@@ -142,6 +142,9 @@ I have reorganized the `loadGame()` method into smaller, more focused methods to
 
 The `nextLevel()` method in `Main.java` had the statement `engine.stop()` written twice, so I deleted the redundant statement.    
 
+
+
+      
 **5- Refactor `onUpdate()` method in Main.java by breaking it down into separate functions**    
 
 I separated `onUpdate()` method into 8 different methods- `updateUI()`, `isBallWithinBlockBounds()`, `checkBlockHits()`, `handleBlockHit(Block block, int hitCode)`, `handleChocoBlockHit(Block block)`, `handleStarBlockHit()`, `setCollisionFlags(int hitCode)`, and `updateChocos()`.    
