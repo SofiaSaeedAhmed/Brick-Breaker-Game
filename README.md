@@ -17,6 +17,12 @@ and if possible, the steps you took to address them.
 
 The `score.java` file had a problem in the `showMessage()` method due to which the animations such as "Level Up" or "+1" for score kept getting stuck on the screen instead of disappearing in some time. To fix the problem, I created a JavaFX `Timeline` object, which allows you to define actions that should occur at specified intervals. This fixed the problem of display staying for a while, however, still sometimes "+1" or "-1" doesnt appear when a brick is broken or lives are lost (heart gets reduced tho).
 
+**2- Increase paddle width feature**    
+
+In the `main.java` file, I have implemented a feature in which if the ball hits the `Block.Long` brick, the paddle width will increase until the next level is reached. I have explained the details of this feature in the "Additions" part of this readme file. As easy as it seemed to implement the feature when I got the idea, it was actually hard to adjust the collision and paddle movement with the new width. Hence, even tho I have made all the changes I can in the `move()` method, `restart()` and collision methods to address the issue, sometimes the increased width paddle works fine and sometimes it doesn't move properly. I can't understand how to solve this issue.    
+
+The reason I kept this feature in the game is because even after taking steps to solve the issue, the issue only comes sometimes and other times it works fine. I put it a lot of hardwork to implement it hence, I thought of keeping it instead of removing it from the game. 
+
 # Features Not Implemented: 
 Identify any features that you were unable to
 implement and provide a clear explanation for why they were left out.
@@ -80,12 +86,33 @@ By using the diamond operator, the compiler will infer the generic type (in this
 
 * In `Main.java` for the `nextLevel()` method, I changed `Runnable()` to lambda expressions.
 
-    
+
+
+            
 **2- Refactor the `setPhysicsToBall` method in Main.java by breaking it down into separate functions**    
 
 I separated `setPhysicsToBall()` method into 4 different methods - `moveBall()` , `checkCollisionWithWalls()`, `checkCollisionWithPaddle()` and `checkCollisionWithBlocks()`. The `setPhysicsToBall()` method now calls these 4 methods.
 
-I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.    
+I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.        
+
+**Functions of each method**    
+
+* _**moveBall()**_
+  
+Controls the movement of a ball in a two-dimensional space. It uses two boolean variables, `goDownBall` and `goRightBal`l, to determine the direction in which the ball should move. The method updates the position of the ball (xBall and yBall) based on the values of these boolean variables and predefined velocity values.
+
+*_**checkCollisionWithWalls()**_    
+
+Checks collision with top and bottom walls to update direction flags accordingly. If bottom wall is hit, then a life is lost unless its a gold ball.    
+
+*_**checkCollisionWithPaddle()**_    
+
+Checks if the ball hit the paddle or not to update directions and variables accordingly.    
+
+*_**checkCollisionWithBlocks()**_    
+
+Checks if ball collided with any side (top, bottom, left and right) and do calculations accordingly.
+
 
 **3- Refactor the `loadGame()` method in Main.java by breaking it down into separate functions**    
 
