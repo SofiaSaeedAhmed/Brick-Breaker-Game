@@ -114,13 +114,28 @@ I separated `setPhysicsToBall()` method into 4 different methods - `moveBall()` 
 I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.        
 
 
-        
-
 
 **3- Refactor the `loadGame()` method in Main.java by breaking it down into separate functions**    
 
 I separated `loadGame()` method into 4 different methods- `updateGameParameters(LoadSave loadSave)`, `clearExistingBlocksAndChocolates()`, `populateBlocksFromSave(ArrayList<BlockSerializable> blockSerializables)` and  `RestartGamefromLoaded()`. The `loadGame()` method now creates a new instance of LoadSave class, reads the saved game state and calls the 4 methods.    
 
+**Functions of each method**    
+
+* _**updateGameParameters(LoadSave loadSave)**_
+
+  Update various game parameters with the loaded values.
+
+* _**clearExistingBlocksAndChocolates()**_
+  Clear existing blocks and chocolates by calling `block.clear()` and `chocos.clear()`.
+
+* _**`populateBlocksFromSave(ArrayList<BlockSerializable> blockSerializables)**_
+
+  Populate the blocks list with blocks from the saved state.
+
+* _**RestartGamefromLoaded()**_
+
+  Try to restart the game with the loaded state.
+  
 I have reorganized the `loadGame()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.    
 
 **4- Remove Redundant statement**    
