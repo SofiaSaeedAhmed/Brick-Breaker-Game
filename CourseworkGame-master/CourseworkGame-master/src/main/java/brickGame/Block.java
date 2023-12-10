@@ -7,7 +7,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 import java.io.Serializable;        // support serialization, convert into sequence of bytes to save in a file
-                                    // later deserialized into an object
+import java.util.Random;
+// later deserialized into an object
 
 // instances of this class can be serialized
 public class Block implements Serializable {
