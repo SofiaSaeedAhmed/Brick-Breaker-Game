@@ -87,8 +87,6 @@ By using the diamond operator, the compiler will infer the generic type (in this
 * In `Main.java` for the `nextLevel()` method, I changed `Runnable()` to lambda expressions.
 
 
-
-            
 **2- Refactor the `setPhysicsToBall` method in Main.java by breaking it down into separate functions**    
 
 I separated `setPhysicsToBall()` method into 4 different methods - `moveBall()` , `checkCollisionWithWalls()`, `checkCollisionWithPaddle()` and `checkCollisionWithBlocks()`. The `setPhysicsToBall()` method now calls these 4 methods.
@@ -99,17 +97,11 @@ I separated `setPhysicsToBall()` method into 4 different methods - `moveBall()` 
   
   Controls the movement of a ball in a two-dimensional space. It uses two boolean variables, `goDownBall` and `goRightBal`l, to determine the direction in which     the ball should move. The method updates the position of the ball (xBall and yBall) based on the values of these boolean variables and predefined velocity         values.
 
-* _**checkCollisionWithWalls()**_    
+* _**checkCollisionWithWalls()**_: Checks collision with top and bottom walls to update direction flags accordingly. If bottom wall is hit, then a life is lost unless its a gold ball.    
 
-  Checks collision with top and bottom walls to update direction flags accordingly. If bottom wall is hit, then a life is lost unless its a gold ball.    
+* _**checkCollisionWithPaddle()**_: Checks if the ball hit the paddle or not to update directions and variables accordingly.    
 
-* _**checkCollisionWithPaddle()**_    
-
-  Checks if the ball hit the paddle or not to update directions and variables accordingly.    
-
-* _**checkCollisionWithBlocks()**_    
-
-  Checks if ball collided with any side (top, bottom, left and right) and do calculations accordingly.    
+* _**checkCollisionWithBlocks()**_: Checks if ball collided with any side (top, bottom, left and right) and do calculations accordingly.    
 
 I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.        
 
@@ -121,16 +113,11 @@ I separated `loadGame()` method into 4 different methods- `updateGameParameters(
 
 **Functions of each method**    
 
-* _**updateGameParameters(LoadSave loadSave)**_
+* _**updateGameParameters(LoadSave loadSave)**_: Update various game parameters with the loaded values.
 
-  Update various game parameters with the loaded values.
+* _**clearExistingBlocksAndChocolates()**_: Clear existing blocks and chocolates by calling `block.clear()` and `chocos.clear()`.
 
-* _**clearExistingBlocksAndChocolates()**_
-  Clear existing blocks and chocolates by calling `block.clear()` and `chocos.clear()`.
-
-* _**`populateBlocksFromSave(ArrayList<BlockSerializable> blockSerializables)**_
-
-  Populate the blocks list with blocks from the saved state.
+* _**`populateBlocksFromSave(ArrayList<BlockSerializable> blockSerializables)**_:  Populate the blocks list with blocks from the saved state.
 
 * _**RestartGamefromLoaded()**_
 
@@ -142,12 +129,16 @@ I have reorganized the `loadGame()` method into smaller, more focused methods to
 
 The `nextLevel()` method in `Main.java` had the statement `engine.stop()` written twice, so I deleted the redundant statement.    
 
-
-
       
 **5- Refactor `onUpdate()` method in Main.java by breaking it down into separate functions**    
 
 I separated `onUpdate()` method into 8 different methods- `updateUI()`, `isBallWithinBlockBounds()`, `checkBlockHits()`, `handleBlockHit(Block block, int hitCode)`, `handleChocoBlockHit(Block block)`, `handleStarBlockHit()`, `setCollisionFlags(int hitCode)`, and `updateChocos()`.    
+
+**Functions of each method**   
+
+* _**updateUI()**_ : Method to update UI elements
+* 
+  
 
 **6- Refactor `onUpdate()` method in Main.java by breaking it down into separate functions**    
 
