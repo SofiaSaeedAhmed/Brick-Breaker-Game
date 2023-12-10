@@ -97,19 +97,19 @@ I separated `setPhysicsToBall()` method into 4 different methods - `moveBall()` 
 
 * _**moveBall()**_
   
-Controls the movement of a ball in a two-dimensional space. It uses two boolean variables, `goDownBall` and `goRightBal`l, to determine the direction in which the ball should move. The method updates the position of the ball (xBall and yBall) based on the values of these boolean variables and predefined velocity values.
+  Controls the movement of a ball in a two-dimensional space. It uses two boolean variables, `goDownBall` and `goRightBal`l, to determine the direction in which     the ball should move. The method updates the position of the ball (xBall and yBall) based on the values of these boolean variables and predefined velocity         values.
 
 * _**checkCollisionWithWalls()**_    
 
-Checks collision with top and bottom walls to update direction flags accordingly. If bottom wall is hit, then a life is lost unless its a gold ball.    
+  Checks collision with top and bottom walls to update direction flags accordingly. If bottom wall is hit, then a life is lost unless its a gold ball.    
 
 * _**checkCollisionWithPaddle()**_    
 
-Checks if the ball hit the paddle or not to update directions and variables accordingly.    
+  Checks if the ball hit the paddle or not to update directions and variables accordingly.    
 
 * _**checkCollisionWithBlocks()**_    
 
-Checks if ball collided with any side (top, bottom, left and right) and do calculations accordingly.    
+  Checks if ball collided with any side (top, bottom, left and right) and do calculations accordingly.    
 
 I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.        
 
