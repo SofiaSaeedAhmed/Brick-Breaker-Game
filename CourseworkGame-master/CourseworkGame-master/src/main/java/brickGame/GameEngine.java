@@ -98,10 +98,8 @@ public class GameEngine {
         return paused;
     }
 
-
-
-
     private long time = 0;      // variable keeps track of elapsed time in the game
+
 
     // This interface declares methods that represent different actions in the game.
     public interface OnAction {
