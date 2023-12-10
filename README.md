@@ -93,8 +93,6 @@ By using the diamond operator, the compiler will infer the generic type (in this
 
 I separated `setPhysicsToBall()` method into 4 different methods - `moveBall()` , `checkCollisionWithWalls()`, `checkCollisionWithPaddle()` and `checkCollisionWithBlocks()`. The `setPhysicsToBall()` method now calls these 4 methods.
 
-I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.        
-
 **Functions of each method**    
 
 * _**moveBall()**_
@@ -111,7 +109,12 @@ Checks if the ball hit the paddle or not to update directions and variables acco
 
 * _**checkCollisionWithBlocks()**_    
 
-Checks if ball collided with any side (top, bottom, left and right) and do calculations accordingly.
+Checks if ball collided with any side (top, bottom, left and right) and do calculations accordingly.    
+
+I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.        
+
+
+        
 
 
 **3- Refactor the `loadGame()` method in Main.java by breaking it down into separate functions**    
