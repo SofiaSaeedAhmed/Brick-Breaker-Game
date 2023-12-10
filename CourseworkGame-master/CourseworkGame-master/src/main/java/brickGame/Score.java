@@ -2,15 +2,23 @@ package brickGame;
 
 // imports for javaFx
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
+
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundPosition;
+
 
 // score class
 public class Score {
@@ -90,42 +98,29 @@ public class Score {
     public void showGameOver(final Main main) {
         // Platform.runLater is a method in JavaFX that allows you to schedule a piece of code to be run on the JavaFX Application Thread.
         Platform.runLater(() -> {
-            Label label = new Label("Game Over :(");
-            label.setTranslateX(200);
-            label.setTranslateY(250);
-            label.setScaleX(2);
-            label.setScaleY(2);
+
+            Image bgimage = new Image("lost.png");
+            BackgroundSize backgroundSize = new BackgroundSize(700, 500, true, true, true, false);
+            BackgroundImage backgroundImg = new BackgroundImage(bgimage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, backgroundSize);
+            Background background = new Background(backgroundImg);
+
+            // Set the background for the root
+            main.root.setBackground(background);
 
             Button restart = new Button("Restart");
-            restart.setTranslateX(220);
-            restart.setTranslateY(300);
-            restart.setOnAction(event -> main.restartGame());
-            main.root.getChildren().addAll(label, restart);
+            restart.setTranslateX(180);
+            restart.setTranslateY(450);
+            restart.setPrefWidth(140);
 
-            Timeline timeline = new Timeline();
-            timeline.getKeyFrames().add(new KeyFrame(
-                    Duration.millis(3000), // Adjust the duration as needed
-                    event -> main.root.getChildren().removeAll(label, restart)
-            ));
-            timeline.play();
+            // Make the button invisible
+            restart.setOpacity(0.0);
+
+            restart.setOnAction(event -> main.restartGame());
+            main.root.getChildren().addAll(restart);
         });
     }
 
     public void showWin(final Main main) {
-        Platform.runLater(() -> {
-            Label label = new Label("You Win :)");
-            label.setTranslateX(200);
-            label.setTranslateY(250);
-            label.setScaleX(2);
-            label.setScaleY(2);
-            main.root.getChildren().addAll(label);
 
-            Timeline timeline = new Timeline();
-            timeline.getKeyFrames().add(new KeyFrame(
-                    Duration.millis(3000), // Adjust the duration as needed
-                    event -> main.root.getChildren().remove(label)
-            ));
-            timeline.play();
-        });
     }
 }
