@@ -226,7 +226,7 @@ In `handle(KeyEvent event)`, I made use of enhanced switch statement which makes
 
 **4- Lost Game screen**    
 
-I changed the `showGameOver()` method in `Score.java` class to now display a screen with an image background which displays that the player has lost. Moreover, it also gives a play again button which restarts the game.    
+I changed the `showGameOver()` method in `Score.java` class to now display a screen with an image background which displays that the player has lost. Moreover, it also gives a play again button which restarts the game. This is helpful as it makes the game more user friendly and aesthetically pleasing.    
 
 **5- Remove showWin() method**    
 
