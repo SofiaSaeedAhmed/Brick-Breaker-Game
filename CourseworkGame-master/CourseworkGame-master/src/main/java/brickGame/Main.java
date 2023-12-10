@@ -14,6 +14,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 
@@ -123,6 +125,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     private void createMainMenu() {
         root = new Pane();
+
         // Load and set the background image
         Image backgroundImage = new Image("bg.png");
         root.setBackground(new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
@@ -137,10 +140,41 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
         startButton.setOnAction(event -> startGame());
 
+        // add gui elements to screen
         root.getChildren().addAll(startButton);
         Scene menuScene = new Scene(root, sceneWidth, sceneHeight);
         primaryStage.setScene(menuScene);
     }
+
+    private void showWinScreen() {
+        root = new Pane();
+
+        // Load and set the background image
+        Image backgroundImage = new Image("win.png");
+        root.setBackground(new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+
+        // Set up the start button
+        Button pabutton = new Button("Play Again");
+        pabutton.setTranslateX(180);
+        pabutton.setTranslateY(540);
+        pabutton.setPrefWidth(140);
+
+        // Make the button invisible
+        pabutton.setOpacity(0.0);
+
+        // label initialization
+        scoreLabel = new Label("Score: " + score);
+        scoreLabel.setTranslateX(210);
+        scoreLabel.setTranslateY(180);
+        scoreLabel.setFont(Font.font("Product Sans", FontWeight.BOLD, 20));
+
+        pabutton.setOnAction(event -> restartGame());
+
+        root.getChildren().addAll(pabutton, scoreLabel);
+        Scene winScene = new Scene(root, sceneWidth, sceneHeight);
+        primaryStage.setScene(winScene);
+    }
+
 
     private void startGame() {
         // checks if game is being loaded from save, if not, it proceeds to set up the initial stage for new game
@@ -152,7 +186,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             }
             // if level 18 is reached, it shows that you have won
             if (level == 8) {
-                new Score().showWin(this);
+                showWinScreen();
                 return;
             }
 
@@ -264,8 +298,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
 
-
-
     // Entry point of JavaFX application
     public static void main(String[] args) {
         launch(args);
@@ -281,7 +313,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             case SPACE -> togglePause();
         }
     }
-
 
 
     //  responsible for handling the paddle's movement
@@ -390,10 +421,12 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             if (!isGoldStatus) {
                 // live will be lost
                 heart--;
+                System.out.printf("Life lost. Lives left: %d%n", heart);
                 new Score().show((double) sceneWidth / 2, (double) sceneHeight / 2, -1, this);
 
                 if (heart == 0) {
                     new Score().showGameOver(this);
+                    //showLostScreen();
                     engine.stop();
                 }
             }
@@ -668,7 +701,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     // restarts the whole game
     public void restartGame() {
-
         try {
             // reset level, heart and score parameter to initial values
             level = 0;
@@ -807,6 +839,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 startResumeCountdown();
             } else {
                 engine.pause();
+                System.out.println("Game Paused");
+                root.getStyleClass().add("pauseRoot");
             }
         }
     }
@@ -814,6 +848,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private void startResumeCountdown() {
         if (engine.isPaused()) {
             // If already paused, initiate countdown and then resume
+            System.out.println("Game Resumed");
+            root.getStyleClass().remove("pauseRoot");
             countdownAndResume();
         }
     }
@@ -907,4 +943,3 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
 }
-
