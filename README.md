@@ -17,7 +17,6 @@ and if possible, the steps you took to address them.
 
 The `score.java` file had a problem in the `showMessage()` method due to which the animations such as "Level Up" or "+1" for score kept getting stuck on the screen instead of disappearing in some time. To fix the problem, I created a JavaFX `Timeline` object, which allows you to define actions that should occur at specified intervals. This fixed the problem of display staying for a while, however, still sometimes "+1" or "-1" doesnt appear when a brick is broken or lives are lost (heart gets reduced tho).
 
-
 # Features Not Implemented: 
 Identify any features that you were unable to
 implement and provide a clear explanation for why they were left out.
@@ -65,6 +64,10 @@ List the Java classes you modified from the provided code
 base. Describe the changes you made and explain why these modifications were
 necessary.
 
+## Refactoring:
+
+Refactoring offers multiple advantages in software development, including improved code maintainability, enhanced readability, bug fixing, and performance optimization.    
+
 **1- Lambda expressions Added**    
 
 * In `GameEngine.java`, for all the Threads, I changed `Runnable()` to lambda expressions. I also removed `@Override` in the classes to simplify the syntax.  
@@ -73,14 +76,44 @@ necessary.
 
 * In `Main.java` for the `private ArrayList<Block> blocks = new ArrayList<Block>()`, I changed it to `private ArrayList<Block> blocks = new ArrayList<>()` and for `private ArrayList<Bonus> chocos = new ArrayList<Bonus>()` I changed to `private final ArrayList<Bonus> chocos = new ArrayList<>()`.    
 
-  By using the diamond operator, the compiler will infer the generic type (in this case, Block) based on the left-hand side of the assignment. This can make your   code cleaner and more concise.
+By using the diamond operator, the compiler will infer the generic type (in this case, Block) based on the left-hand side of the assignment. This can make your   code cleaner and more concise.
 
 * In `Main.java` for the `nextLevel()` method, I changed `Runnable()` to lambda expressions.
 
+    
+**2- Refactor the `setPhysicsToBall` method in Main.java by breaking it down into separate functions**    
 
-**2- Changed threads in GameEngine**  
+I separated `setPhysicsToBall()` method into 4 different methods - `moveBall()` , `checkCollisionWithWalls()`, `checkCollisionWithPaddle()` and `checkCollisionWithBlocks()`. The `setPhysicsToBall()` method now calls these 4 methods.
 
-In `GameEngine.java`, IntelliJ was giving an error indicating that `Thread.sleep()` in a loop like this may lead to inefficient CPU usage, also known as busy-waiting. This was causing glitches in the game and was also potentially wasting CPU resources. Busy-waiting is generally discouraged because it can lead to high CPU usage and inefficient resource utilization. Hence, I introduced the `ScheduledExecutorService` to schedule periodic tasks at a fixed rate, eliminating the need for manual sleep in a loop.
+I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.    
+
+**3- Refactor the `loadGame()` method in Main.java by breaking it down into separate functions**    
+
+I separated `loadGame()` method into 4 different methods- `updateGameParameters(LoadSave loadSave)`, `clearExistingBlocksAndChocolates()`, `populateBlocksFromSave(ArrayList<BlockSerializable> blockSerializables)` and  `RestartGamefromLoaded()`. The `loadGame()` method now creates a new instance of LoadSave class, reads the saved game state and calls the 4 methods.    
+
+I have reorganized the `loadGame()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.    
+
+**4- Remove Redundant statement**    
+
+The `nextLevel()` method in `Main.java` had the statement `engine.stop()` written twice, so I deleted the redundant statement.    
+
+**5- Refactor `onUpdate()` method in Main.java by breaking it down into separate functions**    
+
+I separated `onUpdate()` method into 8 different methods- `updateUI()`, `isBallWithinBlockBounds()`, `checkBlockHits()`, `handleBlockHit(Block block, int hitCode)`, `handleChocoBlockHit(Block block)`, `handleStarBlockHit()`, `setCollisionFlags(int hitCode)`, and `updateChocos()`.    
+
+**6- Refactor `onUpdate()` method in Main.java by breaking it down into separate functions**    
+
+I separated `onPhysicsUpdate()` method into 2 different methods- `updateGoldBallEffect()` and `updateChocoBonusesPosition()`.    
+
+**7- Refactor `start(Stage primaryStage)` method in Main.java by breaking it down into separate functions**    
+
+I separated `start(Stage primaryStage)` method in 3 different methods- `createMainMenu()`, `showWinScreen()`, and `startGame()`.
+
+## Other Modifications:
+
+**1- Changed threads in `GameEngine.java`**  
+
+In `GameEngine.java`, IntelliJ was giving an error indicating that `Thread.sleep()` in a loop like this may lead to inefficient CPU usage, also known as busy-waiting. This was causing glitches in the game and was also potentially wasting CPU resources. Busy-waiting is generally discouraged because it can lead to high CPU usage and inefficient resource utilization. Hence, I introduced the `ScheduledExecutorService` to schedule periodic tasks at a fixed rate, eliminating the need for manual sleep in a loop.    
 
 * _**Initialization of ScheduledExecutorService:**_  
 
@@ -117,35 +150,11 @@ In `GameEngine.java`, IntelliJ was giving an error indicating that `Thread.sleep
 
 These modifications improve the efficiency of the code by using a modern concurrency mechanism (ScheduledExecutorService) for scheduling tasks at fixed rates, eliminating the busy-waiting warning and providing a cleaner and more maintainable code structure and also reduces the amount of code written.    
 
-**2- Refactor the `setPhysicsToBall` method in Main.java by breaking it down into separate functions**    
-
-I separated `setPhysicsToBall()` method into 4 different methods - `moveBall()` , `checkCollisionWithWalls()`, `checkCollisionWithPaddle()` and `checkCollisionWithBlocks()`. The `setPhysicsToBall()` method now calls these 4 methods.
-
-I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.    
-
-**3- Refactor the `loadGame()` method in Main.java by breaking it down into separate functions**    
-
-I separated `loadGame()` method into 4 different methods- `updateGameParameters(LoadSave loadSave)`, `clearExistingBlocksAndChocolates()`, `populateBlocksFromSave(ArrayList<BlockSerializable> blockSerializables)` and  `RestartGamefromLoaded()`. The `loadGame()` method now creates a new instance of LoadSave class, reads the saved game state and calls the 4 methods.    
-
-I have reorganized the `loadGame()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.    
-
-**4- Remove Redundant statement**    
-
-The `nextLevel()` method in `Main.java` had the statement `engine.stop()` written twice, so I deleted the redundant statement.    
-
-**5- Refactor `onUpdate()` method in Main.java by breaking it down into separate functions**    
-
-I separated `onUpdate()` method into 8 different methods- `updateUI()`, `isBallWithinBlockBounds()`, `checkBlockHits()`, `handleBlockHit(Block block, int hitCode)`, `handleChocoBlockHit(Block block)`, `handleStarBlockHit()`, `setCollisionFlags(int hitCode)`, and `updateChocos()`.    
-
-**6- Refactor `onUpdate()` method in Main.java by breaking it down into separate functions**    
-
-I separated `onPhysicsUpdate()` method into 2 different methods- `updateGoldBallEffect()` and `updateChocoBonusesPosition()`.    
-
-**7- Use of `clearExistingBlocksAndChocolates()`:**    
+**2- Use of `clearExistingBlocksAndChocolates()`:**    
 
 I made this method while refactoring `loadGame()` and I used this in `restartGame()` and `nextLevel()` methods. I removed some lines of code in these methods and used this instead. Hence, it was visible that refactoring helps to make other methods smaller and concise as well.    
 
-**8- Use of enhanced switch statment**    
+**3- Use of enhanced switch statment**    
 
 In `handle(KeyEvent event)`, I made use of enhanced switch statement which makes the code more concise and easy to read.
 
