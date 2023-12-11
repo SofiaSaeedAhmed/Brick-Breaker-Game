@@ -20,7 +20,9 @@ This feature pauses the game when player presses the space bar. While the game i
 
 * _handle(KeyEvent event)_: Contains a case where if Space Bar is clicked, it calls the `togglePause()` method.
 
-_Note:_ All these methods are in the main.java file.
+* _Style.css_: Added a .pauseRoot sections with background color set to #c78aa3. This will be added when the game is paused and removed once game is resumed.
+
+_Note:_ All these methods are in the main.java file except for the style.css file changes.
 
 **2- Menu Screens for main menu, win game and lost game**    
 
