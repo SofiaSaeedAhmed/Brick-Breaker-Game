@@ -63,13 +63,36 @@ The coding logic is that, when the longer brick is hit, the flag is set to true 
 * In main.java file: I added a boolean flag (similar to the heart block), this flag helps note that has the paddle width increased or not as the paddle width (defined as brickWdith in our game) is esstential for paddle movements and physics calculations to calculate collisions. This part was very hard to code and I had to make changes to move(), checkCollisionWithPaddle(), restartGame(), handleBlockHit() and startGame().
   
 # Implemented and Working Properly: 
-List the features that have been successfully
-implemented and are functioning as expected. Provide a brief description of each.
+
+1- Main menu screen: This gives a main menu image with game instructions and play button.    
+
+2- Labels: Score, Heart, Level get updated properly. When brick is hit, score increases. When life is lost, heart decreases. Level is completed, next level starts.   
+
+3- Paddle movement: Moves well with left and right keys. When the paddle width is 130, it always works properly. Accepts all collisions.    
+
+4- Gold Ball: Gold ball stays for 5 seconds when start brick is hit and during this time, life is not lost.    
+
+5- Heart Brick: When it is hit, lives gets increased by 1.    
+
+6- Choco brick: When it is hit, the bonus comes depending on a random number. If paddle catched bonus, score is incremented by 3. If paddle misses, nothing happens, score stays same.    
+
+7- Game won screen: Appears when game is won (7 levels completed) with an aesthetic background, total score displayed and play again button. The button works well.
+
+8- Game lost screen: Appears when all lives are lose, with an aesthetic background. All the labels are displayed with bricks left for that level and restart game button which works well.    
+
+9- Pause and resume with Space bar: When game is paused, pink background come. When space bar is pressed again, it resumes with coundown and pink background goes away.    
+
+10- Save game: Game can be saved by clicking S.    
+
+11- Normal bricks: Appear randomly and are hit properly.    
+
+12- Heart comes only once: this works well, only 1 heart brick per level.    
+
+13- Longer brick comes only once: this works well, only 1 longer brick per level.    
+
+14- All collisions work fine - walls, bricks, and paddle.
 
 # Implemented but Not Working Properly 
-List any features that have been
-implemented but are not working correctly. Explain the issues you encountered,
-and if possible, the steps you took to address them.
 
 **1- Show message in Score.java file**    
 
@@ -86,9 +109,6 @@ Identify any features that you were unable to
 implement and provide a clear explanation for why they were left out.
 
 # New Java Classes: 
-Enumerate any new Java classes that you introduced for the
-assignment. Include a brief description of each class's purpose and its location in the
-code.
 
 **1- New Board.java file made**
 
@@ -124,9 +144,6 @@ _Location_: This file is located in the BrickGame folder along with all other cl
 
 
 # Modified Java Classes:
-List the Java classes you modified from the provided code
-base. Describe the changes you made and explain why these modifications were
-necessary.
 
 ## Refactoring:
 
@@ -295,9 +312,6 @@ I removed the `showWin()` method in the `Score.java` class as I have already des
 I added a different backgroun color and pauseRoot section with a bg color.
 
 # Unexpected Problems: 
-Communicate any unexpected challenges or issues you
-encountered during the assignment. Describe how you addressed or attempted to
-resolve them.
 
 **1- Gold Ball background**
 In the method, `updateGoldBallEffect()`, it is written that if the Gold ball has stayed from 5 seconds, it should be converted back to the normal ball. Even tho the gold ball goes back to normal ball and the functionality also changes from gold ball to normal ball, the problem is that sometimes the goldRoot is not removed so the background stays until the next level comes. 
