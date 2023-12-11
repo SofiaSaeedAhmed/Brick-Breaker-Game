@@ -26,7 +26,9 @@ _Note:_ All these methods are in the main.java file.
 
 This feature helps the game look more aesthetic and user friendly. When the game is launched, a Main Menu screen (an image) shows up which has the title of the game, instructions to play the game and a "start" button. When the start button is clicked, the game proceeds to the screen with paddle, labels and blocks and the user can now play the game. If the user wins the game (completes level 7), the win screen shows up. This screen has an image which contains a winning message, a pretty trophy with the total score written on top and a "play again" button. The play again button restarts the game from scratch for the user to play.   
 
-If the user loses the game (all lives lost), a lost game background image comes up with a "Better luck next time" message and a "Play again" button. The score, heart, and level labels are still shown with the bricks left so the user can see at what point they lost the game. 
+If the user loses the game (all lives lost), a lost game background image comes up with a "Better luck next time" message and a "Play again" button. The score, heart, and level labels are still shown with the bricks left so the user can see at what point they lost the game.    
+
+All the background screens are designed by me using Canva.
 
 **Methods used for coding this feature:**    
 
