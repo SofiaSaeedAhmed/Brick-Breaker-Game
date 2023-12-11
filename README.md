@@ -94,33 +94,33 @@ code.
 
 `Main.java` had a `initBoard()` method which I separated into a different class file called `Board.java`. This class file also has a `get()` method.
 
-**Purpose:** This refactoring creates a Board class responsible for initializing and managing the game board. The Main class now creates an instance of Board and adds its blocks to the root of the scene. This separation enhances code organization and maintainability.  
+_Purpose_: This refactoring creates a Board class responsible for initializing and managing the game board. The Main class now creates an instance of Board and adds its blocks to the root of the scene. This separation enhances code organization and maintainability.  
 
   
-**Location:** This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.  
+_Location_: This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.  
 
 
 **2- New BallInitializer.java file made**  
 
 `Main.java` had a `initBall()` method called in `public void start(Stage primaryStage) throws Exception` section and initialized further in the code. I separated this into a different file called `BallInitializer().java`. Moreover the `xBall` and `yBall` calculations are now done in the main method where `initBall()` was called before instead of putting them in the `BallInitializer.java` class. This was done because if I coded that in the separate class, the ball was dropping from the very top instead of dropping from the center and above the paddle.
 
-**Purpose:** Refactoring the `initBall()` method into a different class can offer several advantages in terms of code organization, readability, and maintainability.    
+_Purpose_: Refactoring the `initBall()` method into a different class can offer several advantages in terms of code organization, readability, and maintainability.    
 
-**Location:** This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.    
+_Location_: This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.    
 
 **3- New PaddleInitializer.java file made**    
 
 `Main.java` had a `initBreak()` method in `public void start(Stage primaryStage) throws Exception` section and initialized further in the code. I separated this into a different file called `PaddleInitializer().java`.    
 
-**Purpose:** Refactoring the `initBreak()` method into a different class can offer several advantages in terms of code organization, readability, and maintainability.    
+_Purpose_: Refactoring the `initBreak()` method into a different class can offer several advantages in terms of code organization, readability, and maintainability.    
 
-**Location:** This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.    
+_Location_: This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.    
 
 **4- New ButtonStyleHelper.java file made**    
 
 I wanted to style the `Begin Playing` button in `startGame()` method declared in Main.java file so I made a separate class file to put the styling code for the button.    
 
-**Location:** This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.    
+_Location_: This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.    
 
 
 # Modified Java Classes:
@@ -151,15 +151,15 @@ I separated `setPhysicsToBall()` method into 4 different methods - `moveBall()` 
 
 **Functions of each method**    
 
-* _**moveBall()**_
+* _moveBall()_
   
   Controls the movement of a ball in a two-dimensional space. It uses two boolean variables, `goDownBall` and `goRightBal`l, to determine the direction in which     the ball should move. The method updates the position of the ball (xBall and yBall) based on the values of these boolean variables and predefined velocity         values.
 
-* _**checkCollisionWithWalls():**_ Checks collision with top and bottom walls to update direction flags accordingly. If bottom wall is hit, then a life is lost unless its a gold ball.    
+* _checkCollisionWithWalls():_ Checks collision with top and bottom walls to update direction flags accordingly. If bottom wall is hit, then a life is lost unless its a gold ball.    
 
-* _**checkCollisionWithPaddle():**_ Checks if the ball hit the paddle or not to update directions and variables accordingly.    
+* _checkCollisionWithPaddle():_ Checks if the ball hit the paddle or not to update directions and variables accordingly.    
 
-* _**checkCollisionWithBlocks():**_ Checks if ball collided with any side (top, bottom, left and right) and do calculations accordingly.    
+* _checkCollisionWithBlocks():_ Checks if ball collided with any side (top, bottom, left and right) and do calculations accordingly.    
 
 I have reorganized the `setPhysicsToBall()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.        
 
@@ -171,13 +171,13 @@ I separated `loadGame()` method into 4 different methods- `updateGameParameters(
 
 **Functions of each method**    
 
-* _**updateGameParameters(LoadSave loadSave):**_ Update various game parameters with the loaded values.
+* _updateGameParameters(LoadSave loadSave):_ Update various game parameters with the loaded values.
 
-* _**clearExistingBlocksAndChocolates():**_ Clear existing blocks and chocolates by calling `block.clear()` and `chocos.clear()`.
+* _clearExistingBlocksAndChocolates():_ Clear existing blocks and chocolates by calling `block.clear()` and `chocos.clear()`.
 
-* _**`populateBlocksFromSave(ArrayList<BlockSerializable> blockSerializables):**_  Populate the blocks list with blocks from the saved state.
+* _populateBlocksFromSave(ArrayList<BlockSerializable> blockSerializables):_  Populate the blocks list with blocks from the saved state.
 
-* _**RestartGamefromLoaded():**_ Try to restart the game with the loaded state.
+* _RestartGamefromLoaded():_ Try to restart the game with the loaded state.
   
 I have reorganized the `loadGame()` method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality.    
 
@@ -192,21 +192,21 @@ I separated `onUpdate()` method into 8 different methods- `updateUI()`, `isBallW
 
 **Functions of each method**   
 
-* _**updateUI():**_  Method to update UI elements.
+* _updateUI():_  Method to update UI elements.
   
-* _**isBallWithinBlockBounds():**_ Method to check if the ball is within the vertical bounds where blocks are present.
+* _isBallWithinBlockBounds():_ Method to check if the ball is within the vertical bounds where blocks are present.
 
-* _**checkBlockHits():**_ Check if the ball hits a block and handle accordingly.
+* _checkBlockHits():_ Check if the ball hits a block and handle accordingly.
 
-* _**handleBlockHit(Block block, int hitCode):**_ Method to handle the effects of hitting a block. Calls functions for various blocks, star, normal, heart, choco and longer block.
+* _handleBlockHit(Block block, int hitCode):_ Method to handle the effects of hitting a block. Calls functions for various blocks, star, normal, heart, choco and longer block.
 
-* _**handleChocoBlockHit(Block block):**_ Method to handle the effects of hitting a choco block. Update score according to bonus.
+* _handleChocoBlockHit(Block block):_ Method to handle the effects of hitting a choco block. Update score according to bonus.
 
-* _**handleStarBlockHit():**_ Method to handle the effects of hitting a star block. Add gold root and change the block.
+* _handleStarBlockHit():_ Method to handle the effects of hitting a star block. Add gold root and change the block.
 
-* _**setCollisionFlags(int hitCode):**_ Method to set collision flags based on hit code.
+* _setCollisionFlags(int hitCode):_ Method to set collision flags based on hit code.
 
-* _**updateChocos():**_ Method to update the position of choco bonuses.
+* _updateChocos():_ Method to update the position of choco bonuses.
 
 I have reorganized the method into smaller, more focused methods to improve readability and maintainability. It also makes the code clearer and easier to manage without altering its functionality. 
   
@@ -217,9 +217,9 @@ I separated `onPhysicsUpdate()` method into 2 different methods- `updateGoldBall
 
 **Functions of each method**   
 
-* _**updateGoldBallEffect():**_ Method to update the gold ball effect. Remove the goldball and reset timer.
+* _updateGoldBallEffect():_ Method to update the gold ball effect. Remove the goldball and reset timer.
 
-* _**updateChocoBonusesPosition():**_ Method to update the position of choco bonuses and check for collisions with the paddle.
+* _updateChocoBonusesPosition():_ Method to update the position of choco bonuses and check for collisions with the paddle.
 
 **7- Refactor `start(Stage primaryStage)` method in Main.java by breaking it down into separate functions**    
 
@@ -227,11 +227,11 @@ I separated `start(Stage primaryStage)` method in 3 different methods- `createMa
 
 **Functions of each method**  
 
-* _**createMainMenu():**_ Sets up a main screen which loads when the game is launched. It displays the keys used to play and a start button. I designed the background image using _Canva_.
+* _createMainMenu():_ Sets up a main screen which loads when the game is launched. It displays the keys used to play and a start button. I designed the background image using _Canva_.
   
-* _**showWinScreen():**_ Sets up a screen which is displayed when player wins the game and also displays the total score. It has a background image with I designed using _Canva_ and it has a play again button as well which restarts the game from scratch.
+* _showWinScreen():_ Sets up a screen which is displayed when player wins the game and also displays the total score. It has a background image with I designed using _Canva_ and it has a play again button as well which restarts the game from scratch.
   
-* _**startGame():**_ This initializes all the UI components and other variables of the game. Also defines the levels of the game and calls the `paddleInitializer.java` class.
+* _startGame():_ This initializes all the UI components and other variables of the game. Also defines the levels of the game and calls the `paddleInitializer.java` class.
 
 ## Other Modifications:
 
