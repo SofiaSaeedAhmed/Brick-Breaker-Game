@@ -288,7 +288,11 @@ I changed the `showGameOver()` method in `Score.java` class to now display a scr
 
 **5- Remove showWin() method**    
 
-I removed the `showWin()` method in the `Score.java` class as I have already designed a `showWinScreen()` method in the `main.java` class which does the job.
+I removed the `showWin()` method in the `Score.java` class as I have already designed a `showWinScreen()` method in the `main.java` class which does the job.    
+
+**6- Style.css file**    
+
+I added a different backgroun color and pauseRoot section with a bg color.
 
 # Unexpected Problems: 
 Communicate any unexpected challenges or issues you
