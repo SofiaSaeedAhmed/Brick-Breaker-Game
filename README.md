@@ -46,7 +46,21 @@ All the background screens are designed by me using Canva.
 
 * _showGameOver()_: This method sets up a game over screen with a background image and a "Restart" button, updating the UI on the JavaFX Application Thread.
 
-_Note:_ All methods mentioned above are in the main.java file except for _showGameOver()_, this is in the score.java class file.
+_Note:_ All methods mentioned above are in the main.java file except for _showGameOver()_, this is in the score.java class file.    
+
+**3- Feature for increasing paddle width if a special brick is hit**    
+
+I thought of adding another special brick (the way we have choco, heart and stars). This brick will increase the width of the paddle for that level only, making it easier to play the game. When the next level is reached, the paddle goes back to orignal width.     
+
+The coding logic is that, when the longer brick is hit, the flag is set to true and brickWdith (paddle width) is set to 150 now and width of paddle is increased. Every method that uses brickWdith has an if..else statement which sees if the flag is true or not. If it is true, 150 is used to calculations or else, 130 is used. When the game restarts, the flag is set to false again. When a new level starts, the flag is set to false.
+
+**Methods used for coding this feature:**    
+
+* In block.java file: Defined brick longer and assigned it 103 number. In the draw() method, I added the longer block type and set its image to fill.
+  
+* In board.java file: I added a boolean flag (similar to the one heart block has), which will help note that if one of longer brick is there, then theres no need to add more in a particular level. (Same as heart brick logic)
+
+* In main.java file: I added a boolean flag (similar to the heart block), this flag helps note that has the paddle width increased or not as the paddle width (defined as brickWdith in our game) is esstential for paddle movements and physics calculations to calculate collisions. This part was very hard to code and I had to make changes to move(), checkCollisionWithPaddle(), restartGame(), handleBlockHit() and startGame().
   
 # Implemented and Working Properly: 
 List the features that have been successfully
