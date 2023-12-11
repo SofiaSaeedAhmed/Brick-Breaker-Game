@@ -8,8 +8,18 @@ required.
 
 **1- Pause and resume with countdown feature**    
 
-This feature pauses the game when player presses the space bar. 
+This feature pauses the game when player presses the space bar. While the game is paused, the screen background color changes to a light pink to indicate that the game is in a paused state. The game can be resumed again by pressing the space bar, this starts a coundown on the screen (3...2...1) so that the player gets ready and then the game restarts from where it was paused. Moreover, everytime the game is paused or resumed, a message is printed on the console.    
 
+**Methods used for coding this feature:**    
+
+* _togglePause()_: Toggles the pause state of the game engine. If the engine is not null, it checks whether the engine is currently paused. If is it currently paused, it calls the countdown method to resume the game; otherwise, it pauses the engine and updates the UI.
+
+* _startResumeCountdown()_: If engine is already paused, initiate countdown and then call the resume method. Removes a CSS style class from the UI root element.
+  
+* _countdownAndResume()_: Displays the countdown on the screen. After the countdown, resumes the game engine by updating the UI on the JavaFX application thread.
+
+* _handle(KeyEvent event)_: Contains a case where if Space Bar is clicked, it calls the `togglePause()` method.
+  
 # Implemented and Working Properly: 
 List the features that have been successfully
 implemented and are functioning as expected. Provide a brief description of each.
