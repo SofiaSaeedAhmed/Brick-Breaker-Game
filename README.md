@@ -12,13 +12,37 @@ This feature pauses the game when player presses the space bar. While the game i
 
 **Methods used for coding this feature:**    
 
-* _togglePause()_: Toggles the pause state of the game engine. If the engine is not null, it checks whether the engine is currently paused. If is it currently paused, it calls the countdown method to resume the game; otherwise, it pauses the engine and updates the UI.
+* _togglePause()_: Toggles the pause state of the game engine. If the engine is not null, it checks whether the engine is currently paused. If is it currently paused, it calls the countdown method to resume the game; otherwise, it pauses the engine and updates the UI. 
 
 * _startResumeCountdown()_: If engine is already paused, initiate countdown and then call the resume method. Removes a CSS style class from the UI root element.
   
 * _countdownAndResume()_: Displays the countdown on the screen. After the countdown, resumes the game engine by updating the UI on the JavaFX application thread.
 
 * _handle(KeyEvent event)_: Contains a case where if Space Bar is clicked, it calls the `togglePause()` method.
+
+_Note:_ All these methods are in the main.java file.
+
+**2- Menu Screens for main menu, win game and lost game**    
+
+This feature helps the game look more aesthetic and user friendly. When the game is launched, a Main Menu screen (an image) shows up which has the title of the game, instructions to play the game and a "start" button. When the start button is clicked, the game proceeds to the screen with paddle, labels and blocks and the user can now play the game. If the user wins the game (completes level 7), the win screen shows up. This screen has an image which contains a winning message, a pretty trophy with the total score written on top and a "play again" button. The play again button restarts the game from scratch for the user to play.   
+
+If the user loses the game (all lives lost), a lost game background image comes up with a "Better luck next time" message and a "Play again" button. The score, heart, and level labels are still shown with the bricks left so the user can see at what point they lost the game. 
+
+**Methods used for coding this feature:**    
+
+* _start(Stage primaryStage)_: I have refactored the orignal code for this and broken it into different methods. If game is not started, it will show the main menu screen by calling its method, or else it will directly call the start game method (for level ups and restart  game).
+  
+*   _createMainMenu()_: Creates a new Pane called root to serve as the main container for UI elements. Loads a background image. Creates a "Start Game" buttonwith a specific position and sets the button's initial opacity to 0.0, making it invisible so that only the button designed in the image can be seen. Then proceeds to the initial scene for the game.
+  
+* _startGame()_: This method has the condition - if level == 8 is reached, it calls the showWinScreen method.
+
+* _showWinScreen()_: Creates new pane, loads background image, creates play again button, sets its position according to the background image and makes it invisible. Then proceeds to the initial scene for the game.
+
+* _checkCollisionWithWalls()_: This method contains the call to game lost in the `score.java` file. If heart == 0 it calls `new Score().showGameOver(this)`.
+
+* _showGameOver()_: This method sets up a game over screen with a background image and a "Restart" button, updating the UI on the JavaFX Application Thread.
+
+_Note:_ All methods mentioned above are in the main.java file except for _showGameOver()_, this is in the score.java class file.
   
 # Implemented and Working Properly: 
 List the features that have been successfully
