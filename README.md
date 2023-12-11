@@ -38,7 +38,7 @@ If the user loses the game (all lives lost), a lost game background image comes 
 
 * _showWinScreen()_: Creates new pane, loads background image, creates play again button, sets its position according to the background image and makes it invisible. Then proceeds to the initial scene for the game.
 
-* _checkCollisionWithWalls()_: This method contains the call to game lost in the `score.java` file. If heart == 0 it calls `new Score().showGameOver(this)`.
+* _checkCollisionWithWalls()_: This method contains the call to game lost in the `score.java` file. If heart == 0 it calls `Score().showGameOver(this)`.
 
 * _showGameOver()_: This method sets up a game over screen with a background image and a "Restart" button, updating the UI on the JavaFX Application Thread.
 
