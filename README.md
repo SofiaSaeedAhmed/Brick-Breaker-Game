@@ -11,6 +11,7 @@ The code for the game is located in project/AhmedSofiaSaeed_JavaVersion.zip file
 * bonus1.png
 * bonus2.png
 * lost.png
+* star.jpg
 * choco.jpg
 * style.css
 
