@@ -7,9 +7,14 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 import java.io.Serializable;        // support serialization, convert into sequence of bytes to save in a file
-import java.util.Random;
-// later deserialized into an object
 
+/**
+ * This class encapsulates the attributes and behaviors of game blocks for use in a graphical gaming environment.
+ * It includes variables for the block's position, color, type, and graphical representation.
+ *  The class also provides a method to check if a ball hits the block and returns the hit direction.
+ *  Accessor methods allow retrieval of block dimensions and padding. Reference:
+ *  * <a href="https://github.com/kooitt/CourseworkGame/blob/master/src/main/java/brickGame/Block.java">Block.java Link</a>
+ */
 // instances of this class can be serialized
 public class Block implements Serializable {
 
@@ -19,13 +24,31 @@ public class Block implements Serializable {
     private final static Block block = new Block(-1, -1, Color.TRANSPARENT, 99); // normal block = 99
 
     // class variables
+
+    /**
+     * Variable for row representation
+     */
     public int row;
+
+    /**
+     * Variable for column representation
+     */
     public int column;
 
 
-    public boolean isDestroyed = false;     // block is destroyed or not
+    /**
+     * block is destroyed or not
+     */
+    public boolean isDestroyed = false;
 
-    private final Color color;
+    /**
+     * To set brick color
+     */
+    protected final Color color;
+
+    /**
+     * To define brick type
+     */
     public int type;
 
     public int x;
@@ -37,23 +60,70 @@ public class Block implements Serializable {
     private final int paddingTop = height * 2;
     private final int paddingH = 50;
 
-    public Rectangle rect;              // object rect that represents the graphical representation of the block
+    /**
+     * object rect that represents the graphical representation of the block
+     */
+    public Rectangle rect;
 
-    // constants --> define possible hit directions a
+    /**constants --> define possible hit directions
+     *
+     */
     public static int NO_HIT = -1;
+
+    /**constants --> define possible hit directions
+     *
+     */
     public static int HIT_RIGHT = 0;
+
+    /**constants --> define possible hit directions
+     *
+     */
     public static int HIT_BOTTOM = 1;
+
+    /**constants --> define possible hit directions
+     *
+     */
     public static int HIT_LEFT = 2;
+
+    /**constants --> define possible hit directions
+     *
+     */
     public static int HIT_TOP = 3;
 
     // constants --> define possible block types
+
+    /**
+     *  Integer representation of the normal brick
+     */
     public static int BLOCK_NORMAL = 99;
+
+    /**
+     *  Integer representation of the choco brick
+     */
     public static int BLOCK_CHOCO = 100;
+
+    /**
+     *  Integer representation of the star brick
+     */
     public static int BLOCK_STAR = 101;
+
+    /**
+     *  Integer representation of the heart brick
+     */
     public static int BLOCK_HEART = 102;
 
+    /**
+     *  Integer representation of the longer brick
+     */
+    public static int BLOCK_LONGER = 103;
 
-    // constructor --> initializes block properties and calls the draw method
+
+    /**constructor --> initializes block properties and calls the draw method
+     * @param row
+     * @param column
+     * @param color
+     * @param type
+     */
     public Block(int row, int column, Color color, int type) {
         this.row = row;
         this.column = column;
@@ -63,6 +133,9 @@ public class Block implements Serializable {
         draw();
     }
 
+    /**
+     * sets up the graphical representation of the block and fills image depending on the type
+     */
     private void draw() {
 
         // sets up the graphical representation of the block
@@ -90,16 +163,25 @@ public class Block implements Serializable {
             Image image = new Image("star.jpg");
             ImagePattern pattern = new ImagePattern(image);
             rect.setFill(pattern);
-        } else {
+        } else if (type == BLOCK_LONGER){
+            Image image = new Image("longer.png");
+            ImagePattern pattern = new ImagePattern(image);
+            rect.setFill(pattern);
+        }else {
             rect.setFill(color);
         }
 
     }
 
 
+    /**
+     * checks whether the ball hits the block and returns in the hit direction
+     * @param xBall
+     * @param yBall
+     * @return the direction to hit
+     */
     public int checkHitToBlock(double xBall, double yBall) {
 
-        // checks whether the ball hits the block and returns in the hit direction
 
         if (isDestroyed) {          // initialized to false, so means no hit
             return NO_HIT;
@@ -124,20 +206,33 @@ public class Block implements Serializable {
         return NO_HIT;
     }
 
-    // provide access to properties such as dimensions and padding
+    /**
+     * provide access to properties such as padding
+     */
 
     public static int getPaddingTop() {
         return block.paddingTop;
     }
 
+    /**
+     * provide access to properties such as padding
+     */
+
     public static int getPaddingH() {
         return block.paddingH;
     }
+
+    /**
+     * provide access to properties such as dimensions
+     */
 
     public static int getHeight() {
         return block.height;
     }
 
+    /**
+     * provide access to properties such as dimensions
+     */
     public static int getWidth() {
         return block.width;
     }
