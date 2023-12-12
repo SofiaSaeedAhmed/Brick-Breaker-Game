@@ -1,18 +1,29 @@
 package brickGame;
 
 import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.control.Button;
+
+/**
+ * This class is responsible for styling the main button used in the game.
+ */
 
 public class ButtonStyleHelper {
 
+    /**
+     * generates and returns a button with the specified text, applying a set of predefined styles using the applyStyles method.
+     * @param text
+     * @return button
+     */
     public static Button createStyledButton(String text) {
         Button button = new Button(text);
         applyStyles(button);
         return button;
     }
 
+    /**
+     * sets the base styling for the button, including background color, text fill, font size, padding, and border properties.
+     * It also adds a hover effect.
+     * @param button
+     */
     private static void applyStyles(Button button) {
         String baseStyle = "-fx-background-color: #4CAF50; " +
                 "-fx-text-fill: white; " +
