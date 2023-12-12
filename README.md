@@ -116,8 +116,7 @@ In the `main.java` file, I have implemented a feature in which if the ball hits 
 The reason I kept this feature in the game is because even after taking steps to solve the issue, the issue only comes sometimes and other times it works fine. I put it a lot of hardwork to implement it hence, I thought of keeping it instead of removing it from the game. 
 
 # Features Not Implemented: 
-Identify any features that you were unable to
-implement and provide a clear explanation for why they were left out.
+I could not add new levels or make levels interesting since I have done some different additions (example: paddle width feature and pause feature) and if I changed the game playing, I was worried it will mess up the game.
 
 # New Java Classes: 
 
