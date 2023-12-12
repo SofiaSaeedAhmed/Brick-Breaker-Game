@@ -18,12 +18,18 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-
 // imports for other functionality
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This is the main file, which runs the whole game and calls other classes.
+ * Most of the game features are defined in this class.
+ * Each method has one specific task. Reference:
+ *
+ * <a href="https://github.com/kooitt/CourseworkGame/blob/master/src/main/java/brickGame/Main.java">Main.java Link</a>
+ */
 
 public class Main extends Application implements EventHandler<KeyEvent>, GameEngine.OnAction {
 
@@ -33,9 +39,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private double centerBreakX;
     private double yBreak = 640.0f;     // y coordinates of paddle
 
-    private final int breakWidth     = 130;
+    private int breakWidth     = 130;
     private final int breakHeight    = 30;
-    private final int halfBreakWidth = breakWidth / 2;
 
     private final int sceneWidth = 500;
     private final int sceneHeight = 700;
@@ -50,6 +55,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     // flags indicating special conditions in the game
     private boolean isGoldStatus      = false;
     private boolean isExistHeartBlock = false;
+    private boolean isExistLongBlock = false;
+    private boolean longhit = false;
 
     // flag to indicate resume countdown
     private boolean isCountingDown = false;
@@ -64,11 +71,23 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     // time related variables
     private long time     = 0;
+
+    /**
+     * Time related variable, used to keep track of when the brick was hit
+     */
     public long hitTime  = 0;
     private long goldTime = 0;
 
     private GameEngine engine;      // instance of the engine path
+
+    /**
+     * Represents the file path for saving a specific file
+     */
     public static String savePath    = "D:/save/save.mdds";
+
+    /**
+     * Represents the directory path "D:/save/" where the save file is stored.
+     */
     public static String savePathDir = "D:/save/";
 
     private ArrayList<Block> blocks = new ArrayList<>();
@@ -92,12 +111,20 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             Color.TAN,
     };
 
-    // labels to display score, lives left and level of game
+
+    /**
+     * Basic root for UI elements
+     */
     public  Pane             root;
+
+    // labels to display score, lives left and level of game
     private Label            scoreLabel;
     private Label            heartLabel;
+
+    /**
+     * Label to display the level of game
+     */
     public Label            levelLabel;
-    public Label            welcome;
 
     private boolean loadFromSave = false;   // Flag to indicate whether to load the game from a save file.
 
@@ -109,6 +136,11 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     private boolean gameStarted = false;  // Flag to track whether the game has started
 
+    /**
+     * Initializes the primary stage, checks if the game has already started,
+     * and either displays the main menu or starts the game accordingly.
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -183,6 +215,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             // if game is not loaded and level is greater than 1, it displays level up
             if (level > 1) {
                 new Score().showMessage("Level Up :)", this);
+                breakWidth = 130;
+                longhit = false;
             }
             // if level 18 is reached, it shows that you have won
             if (level == 8) {
@@ -298,12 +332,17 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
 
-    // Entry point of JavaFX application
+    /**
+     * Entry point of JavaFX application
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
-    // event handling
+    /**
+     * Handles actions caused by keyboard presses to control the game playing.
+     */
     @Override
     public void handle(KeyEvent event) {
         switch (event.getCode()) {
@@ -317,6 +356,12 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     //  responsible for handling the paddle's movement
     private void move(final int direction) {        // direction tells whether to move left or right
+        if (!longhit){
+            breakWidth = 130;
+
+        }else {
+            breakWidth = 150;
+        }
         new Thread(() -> {
             int sleepTime = 4;
             for (int i = 0; i < 30; i++) {
@@ -331,7 +376,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 } else {
                     xBreak--;
                 }
-                centerBreakX = xBreak + halfBreakWidth;
+                centerBreakX = xBreak + (double) breakWidth /2;
+
                 try {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
@@ -343,6 +389,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             }
         }).start();
     }
+
 
     // ball movements
     private boolean goDownBall                  = true;
@@ -426,7 +473,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
                 if (heart == 0) {
                     new Score().showGameOver(this);
-                    //showLostScreen();
                     engine.stop();
                 }
             }
@@ -446,6 +492,11 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
     private void checkCollisionWithPaddle() {
+        if (!longhit){
+            breakWidth = 130;
+        }else {
+            breakWidth = 150;
+        }
         // condition is checking if the ball's vertical position is at or below the paddle's top edge, considering the ball's radius.
         if (yBall >= yBreak - ballRadius) {
             // This checks if the ball is within the horizontal bounds of the paddle.
@@ -555,6 +606,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
                 // write boolean flags
                 outputStream.writeBoolean(isExistHeartBlock);
+                outputStream.writeBoolean(isExistLongBlock);
                 outputStream.writeBoolean(isGoldStatus);
                 outputStream.writeBoolean(goDownBall);
                 outputStream.writeBoolean(goRightBall);
@@ -613,6 +665,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private void updateGameParameters(LoadSave loadSave) {
         // Update various game parameters with the loaded values
         isExistHeartBlock = loadSave.isExistHeartBlock;
+        isExistLongBlock = loadSave.isExistLongBlock;
         isGoldStatus = loadSave.isGoldStatus;
         goDownBall = loadSave.goDownBall;
         goRightBall = loadSave.goRightBall;
@@ -681,6 +734,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 // resets gold status and if heart exists
                 isGoldStatus = false;
                 isExistHeartBlock = false;
+                isExistLongBlock = false;
 
                 // reset hit time, time and gold time
                 hitTime = 0;
@@ -699,13 +753,17 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         });
     }
 
-    // restarts the whole game
+    /**
+     * Restarts the whole game with initial settings
+     */
+
     public void restartGame() {
         try {
             // reset level, heart and score parameter to initial values
             level = 0;
             heart = 3;
             score = 0;
+            breakWidth = 130;
 
             // reset x velocity of ball, destroyed block count and collide flags
             vX = 1.000;
@@ -718,6 +776,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             // resets gold status and heart block existence, time , hit time and gold time
             isGoldStatus = false;
             isExistHeartBlock = false;
+            isExistLongBlock = false;
+            longhit = false;
             hitTime = 0;
             time = 0;
             goldTime = 0;
@@ -791,7 +851,10 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         if (block.type == Block.BLOCK_HEART) {
             heart++;
         }
-
+        if (block.type == Block.BLOCK_LONGER){
+            longhit = true;
+            rect.setWidth(150);
+        }
         setCollisionFlags(hitCode);
     }
 
@@ -831,7 +894,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             choco.choco.setY(choco.y);
         }
     }
-
 
     private void togglePause() {
         if (engine != null) {
@@ -917,6 +979,11 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     // Method to update the position of choco bonuses and check for collisions with the paddle
     private void updateChocoBonusesPosition() {
+        if (!longhit){
+            breakWidth = 130;
+        }else {
+            breakWidth = 150;
+        }
         for (Bonus choco : chocos) {
             if (choco.y > sceneHeight || choco.taken) {
                 continue;
