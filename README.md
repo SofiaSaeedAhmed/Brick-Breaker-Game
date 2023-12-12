@@ -152,6 +152,13 @@ I wanted to style the `Begin Playing` button in `startGame()` method declared in
 
 _Location_: This file is located in the BrickGame folder along with all other classes- Main.java, Block.java, Bonus.java etc.    
 
+**5- BlockTest.java file made**    
+
+I made this test file to do JUnit testing and the test case passed.    
+
+**Location:** srs -> test -> java -> brickGame -> BlockTest.java    
+
+
 
 # Modified Java Classes:
 
