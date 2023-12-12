@@ -7,30 +7,53 @@ import javafx.scene.shape.Rectangle;
 import java.io.Serializable;
 import java.util.Random;
 
+/**
+ * This class is responsible for handling the implementation of the bonus which falls when choco brick is hit. Reference:
+ *
+ * <a href="https://github.com/kooitt/CourseworkGame/blob/master/src/main/java/brickGame/Bonus.java">Bonus.java Link</a>
+ */
+
 public class Bonus implements Serializable {
-    // type of object --> gives bonus
+    /**
+     * rectangle to represent choco brick
+     */
     public Rectangle choco;
 
-    // x and y coordinates of brick
+    /**
+     * x coordinate of brick
+     */
     public double x;
+
+    /**
+     * y coordinate of brick
+     */
     public double y;
 
-    // the time when brick was created
+    /**
+     * the time when brick was created
+     */
     public long timeCreated;
 
-    // boolean field to represent if bonus has been taken
+    /**
+     * boolean field to represent if bonus has been taken
+     */
     public boolean taken = false;
 
+    /**
+     * draws the bonus object after setting the x and y position on grid for block
+     * @param row
+     * @param column
+     */
     public Bonus(int row, int column) {
-
-        // draw the bonus object after setting the x and y position on grid for block
         x = (column * (Block.getWidth())) + Block.getPaddingH() + ((double) Block.getWidth() / 2) - 15;
         y = (row * (Block.getHeight())) + Block.getPaddingTop() + ((double) Block.getHeight() / 2) - 15;
 
         draw();
     }
 
-    // creates the bonus object
+    /**
+     * creates and fills image for the bonus object
+     */
     private void draw() {
         choco = new Rectangle();
         choco.setWidth(30);
@@ -51,3 +74,5 @@ public class Bonus implements Serializable {
         choco.setFill(new ImagePattern(new Image(url)));
     }
 }
+
+
