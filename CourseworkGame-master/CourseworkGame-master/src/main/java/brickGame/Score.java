@@ -9,21 +9,32 @@ import javafx.scene.control.Label;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
 import javafx.util.Duration;
 
-import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundPosition;
 
+/**
+ * This class is responsible for controlling the animations of all the displays such as "Level up" and "+1".
+ * Moreover, it is also responsible to show the game over screen. Reference:
+ *
+ * <a href="https://github.com/kooitt/CourseworkGame/blob/master/src/main/java/brickGame/Score.java">Score.java Link</a>
+ */
 
 // score class
 public class Score {
-    // show method --> responsible for displaying a score animation at a specified position - x and y
-    // takes parameter score and gives reference to main class
+    /**
+     * Responsible for displaying a score animation at a specified position - x and y
+     * takes parameter score and gives reference to main class
+     * @param x
+     * @param y
+     * @param score
+     * @param main
+     */
+
     public void show(final double x, final double y, int score, final Main main) {
 
         String sign = (score >= 0) ? "+" : "";
@@ -60,6 +71,12 @@ public class Score {
         }).start();
     }
 
+    /**
+     *  Displays a message label at a specific position, providing an animation effect similar to the show method.
+     *  It takes care of adding and removing the label and includes a separate thread for animation adjustments.
+     * @param message
+     * @param main
+     */
     public void showMessage(String message, final Main main) {
         final Label label = new Label(message);
         label.setTranslateX(220);
@@ -95,6 +112,12 @@ public class Score {
     }
 
 
+    /**
+     * Displays a game over screen with a background image ("lost.png") and a restart button.
+     * It utilizes JavaFX Platform.runLater to update UI components on the main application thread.
+     * The restart button triggers the restartGame method in the Main class when clicked.
+     * @param main
+     */
     public void showGameOver(final Main main) {
         // Platform.runLater is a method in JavaFX that allows you to schedule a piece of code to be run on the JavaFX Application Thread.
         Platform.runLater(() -> {
@@ -120,7 +143,6 @@ public class Score {
         });
     }
 
-    public void showWin(final Main main) {
-
-    }
 }
+
+
