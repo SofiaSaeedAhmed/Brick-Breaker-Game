@@ -7,10 +7,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
-// loadSave method reads the state of a game from a file using ObjectInputStream
+/**
+ * This class is used to read the state of a game from a file using ObjectInputStream. Reference:
+ *
+ * <a href="https://github.com/kooitt/CourseworkGame/blob/master/src/main/java/brickGame/LoadSave.java">LoadSave.java Link</a>
+ */
 public class LoadSave {
     // true or false
     public boolean          isExistHeartBlock;
+    public boolean          isExistLongBlock;
     public boolean          isGoldStatus;
     public boolean          goDownBall;
     public boolean          goRightBall;
@@ -23,25 +28,55 @@ public class LoadSave {
     public boolean          collideToLeftBlock;
     public boolean          collideToTopBlock;
 
-    // variables
+    /**
+     * variable to store level
+     */
     public int              level;
+
+    /**
+     * variable to store score
+     */
     public int              score;
+
+    /**
+     * variable to store lives left
+     */
     public int              heart;
+
+    /**
+     * variable to store how many blocks destroyed
+     */
     public int              destroyedBlockCount;
     public double           xBall;
     public double           yBall;
     public double           xBreak;
     public double           yBreak;
     public double           centerBreakX;
+
+    /**
+     * variable to store total time
+     */
     public long             time;
+
+    /**
+     * variable to store time left for gold time
+     */
     public long             goldTime;
+
+    /**
+     * variable to store vertical speed of the ball
+     */
     public double           vX;
 
-    // array list to save info
+    /**
+     * array list to save info
+     */
     public ArrayList<BlockSerializable> blocks = new ArrayList<BlockSerializable>();
 
 
-    // read method --> responsible to read game state from file using ObjectInputStream
+    /**
+     * responsible to read game state from file using ObjectInputStream
+     */
     public void read() {
 
 
@@ -78,17 +113,10 @@ public class LoadSave {
             collideToLeftBlock = inputStream.readBoolean();
             collideToTopBlock = inputStream.readBoolean();
 
-            /*
-            try {
-                blocks = (ArrayList<BlockSerializable>) inputStream.readObject();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }*/
 
-            // changed to
             try {
                 @SuppressWarnings("unchecked")      // used to suppress the unchecked cast warning that arises
-                                                    // because the compiler cannot ensure the type safety of the cast.
+                                 // because the compiler cannot ensure the type safety of the cast.
                 ArrayList<BlockSerializable> objBlocks = (ArrayList<BlockSerializable>) inputStream.readObject(); // after reading it casts it to array list
                 blocks = objBlocks;
             } catch (IOException | ClassNotFoundException e) {
