@@ -1,8 +1,18 @@
 # COMP2042_CW_hcysa3
 # Compilation Instructions: 
-Provide a clear, step-by-step guide on how to compile the
-code to produce the application. Include any dependencies or special settings
-required.
+The code for the game is located in project/AhmedSofiaSaeed_JavaVersion.zip file. You extract all the files and run it on IntelliJ or any other Java IDE. Make sure you incorporate the javaFX sdk from ypur library. Moreover, the resources file should have the following pictures with exact names, please dont change the name of any of the following files since all the images have been used in the game:    
+* ball.png
+* goldball.png
+* bg.png
+* heart.jpg
+* win.png
+* longer.png
+* block.jpg
+* bonus1.png
+* bonus2.png
+* lost.png
+* choco.jpg
+* style.css
 
 # Additions:
 
