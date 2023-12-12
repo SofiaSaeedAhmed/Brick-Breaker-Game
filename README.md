@@ -335,3 +335,7 @@ In the method, `updateGoldBallEffect()`, it is written that if the Gold ball has
 This problem should not come as I have coded `root.getStyleClass().remove("goldRoot");` and `ball.setFill(new ImagePattern(new Image("ball.png")));` one after the other, so if one picture is changing the background should also be changed. The functionality of the game however is not affected and it runs smoothly.    
 
 I tried my best to fix this error but it still occurs sometimes.
+
+# Javadoc    
+
+I have added the reference links at the end of description for each class file.
