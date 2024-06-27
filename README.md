@@ -1,4 +1,4 @@
-# COMP2042_CW_hcysa3
+# Brick Breaker Game
 # Compilation Instructions: 
 The code for the game is located in project/AhmedSofiaSaeed_JavaVersion.zip file. You extract all the files and run it on IntelliJ or any other Java IDE. Make sure you incorporate the javaFX sdk from ypur library. Moreover, the resources file should have the following pictures with exact names, please dont change the name of any of the following files since all the images have been used in the game:    
 * ball.png
